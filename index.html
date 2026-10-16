@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121719">
+  <meta name="description" content="誰も嘘をついていないと言う。けれど全員が同じ言葉を使う。現実にあり得る沈黙を扱う短編心理ミステリー試作。">
+  <title>引継ぎ室 — 全員が同じことを言う夜</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./story.js"></script>
+  <script defer src="./game.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">／</span> 引継ぎ室 <span class="brand-en">HANDOVER ROOM</span></div>
+      <div class="meta"><span class="live-indicator" aria-hidden="true"></span> PRIVATE PROTOTYPE <span class="meta-divider" aria-hidden="true">/</span> v0.1</div>
+    </header>
+
+    <main class="main">
+      <section class="intro" aria-label="作品の前書き">
+        <p class="eyebrow">A PSYCHOLOGICAL MYSTERY / PROLOGUE</p>
+        <p class="intro-quote">人は、嘘をつくより先に、<br><strong>言わないこと</strong>を覚える。</p>
+        <div class="intro-rule" aria-hidden="true"></div>
+        <p class="intro-small">事故を報告する書類が一枚。<br>そして、説明を揃えた三人。<br>あなたは「調べたこと」だけを書かなければならない。</p>
+      </section>
+
+      <div class="content-grid">
+        <section class="story-panel" aria-labelledby="heading">
+          <div class="scene-top">
+            <span id="stage" class="scene-label">第一夜 / 調査開始</span>
+            <span class="scene-stamp">記録番号 : 01–A</span>
+          </div>
+          <div class="progress-row" aria-label="調査の進行">
+            <span id="progress-text">1 / 5 場面</span>
+            <div class="meter"><div id="progress" class="meter-fill"></div></div>
+          </div>
+          <div class="scene-body">
+            <p class="section-kicker">調査記録</p>
+            <h1 id="heading" tabindex="-1">全員が同じことを言った</h1>
+            <p id="narrative" class="narrative" aria-live="polite"></p>
+            <div class="choice-section">
+              <p class="choice-eyebrow">YOUR DECISION</p>
+              <h2 id="question" class="question"></h2>
+              <div id="choices" class="choices"></div>
+            </div>
+            <p id="notice" class="notice" role="status"></p>
+          </div>
+        </section>
+
+        <aside class="evidence-panel" aria-label="調査した記録">
+          <div class="evidence-heading">
+            <div>
+              <p class="section-kicker">NOTES / 手がかり</p>
+              <h2>あなたが見たもの</h2>
+            </div>
+            <span id="clue-count" class="clue-count">00</span>
+          </div>
+          <p class="evidence-description">記録は真実を保証しない。<br>誰の立場から見たものかを忘れないこと。</p>
+          <div id="clues" class="clue-list"></div>
+          <div class="evidence-foot">
+            <div class="tiny-divider" aria-hidden="true"></div>
+            <p>確定できることと、推測していること。その境界を自分で選んでください。</p>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>FICTION / このゲームの人物、工場、出来事はすべて架空です。<br>これは開発途中のデモであり販売品ではありません。</div>
+      <button id="reset" class="reset" type="button">最初からやり直す <span aria-hidden="true">↺</span></button>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "handover-room-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline grounded psychological-mystery narrative prototype",
+  "scripts": {
+    "test": "node --test tests/story.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

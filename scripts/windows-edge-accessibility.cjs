@@ -36,7 +36,7 @@ const selected=[
 const pause=ms=>new Promise(ok=>setTimeout(ok,ms));
 async function until(fn,limit=15000){
  const begin=Date.now();
- while(Date.now()-begin<limit){const v=await fn();if(v)return v;await pause(125);}
+ while(Date.now()-begin<limit){let v=null;try{v=await fn();}catch(_){/* execution context may reload */}if(v)return v;await pause(125);}
  throw Error("Browser response timed out");
 }
 class CDP{

@@ -30,7 +30,7 @@
   return {current,next,now,max,
     guide:current+"  →  "+next,
     instruction:m?.scene==="epilogue"?"次の事件を始める前に、必要なら記録を書き出してください。":
-      "選んだ行動が次の場面につながります。進行はこの端末に自動保存されます。"};
+      "選択するとその判断が確定し、次の場面へ進みます。記録は自動保存されます。"};
  }
  return Object.freeze({describe});
 });

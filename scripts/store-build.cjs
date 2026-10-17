@@ -40,6 +40,13 @@ function gate(env, platform = process.platform) {
     issues.push("STORE_IDENTITY_CONFIRMED=YES が未設定です（Partner Centerの正式Identity照合が必要）");
   if (!storeVersion(env.STORE_PACKAGE_VERSION))
     issues.push("STORE_PACKAGE_VERSION は1.0.0.0形式（先頭1以上・末尾0）で設定してください");
+  else {
+    try {
+      const appVersion=JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8")).version;
+      if(env.STORE_PACKAGE_VERSION!==appVersion+".0")
+        issues.push("STORE_PACKAGE_VERSION と package.json の版番号が不一致です（"+appVersion+".0 に合わせてください）");
+    } catch(_error) {issues.push("package.json の版番号を検証できません");}
+  }
   if (/^CN=ms$/i.test(env.STORE_PUBLISHER||""))
     issues.push("STORE_PUBLISHER に仮のCN=msは使用できません。Partner Centerの正式発行者を指定してください");
   const required = ["index.html", "style.css", "journey-v16.js", "game-v16.js", "scripts/verify-msix.ps1", "story.js", "morning.js",

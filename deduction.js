@@ -3,11 +3,13 @@
  * 外部サービス、AI、乱数、個人データ送信なし。
  */
 (function(root, factory) {
-  const notes = typeof module !== "undefined" && module.exports ? require("./case-notes-v5.js") : root.HandoverCaseNotesV5;
-  const api = factory(notes);
+  const notes = typeof module !== "undefined" && module.exports ? require("./case-notes-v6.js") : root.HandoverCaseNotesV6;
+  const arcs = typeof module !== "undefined" && module.exports
+    ? require("./major-arcs.js") : root.HandoverGrandArcs;
+  const api = factory(notes,arcs);
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.HandoverDeduction = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function(notes) {
+})(typeof globalThis !== "undefined" ? globalThis : this, function(notes,arcs) {
   "use strict";
 
   const FOCI = Object.freeze({
@@ -41,7 +43,10 @@
   function facts(state) {
     return notes.observed(state);
   }
-  function score(focus, pair) {
+  function score(focus, pair, state) {
+    const arc=arcs.active(state);
+    if (arc && arc.focus===focus && pair.includes("arc-primary") &&
+        (pair.includes("arc-support") || pair.includes("arc-counter")))return 2;
     const related = FOCI[focus].needed;
     if (related.some(group => group.every(id => pair.includes(id)))) return 2;
     const relevant = new Set(related.flat());
@@ -54,7 +59,7 @@
     for(let i=0;i<evidence.length;i++) {
       for(let j=i+1;j<evidence.length;j++) {
         const ids = [evidence[i].id,evidence[j].id];
-        pairs.push({id:ids.join("|"),items:ids,score:score(focus,ids),label:evidence[i].fact+" ／ "+evidence[j].fact});
+        pairs.push({id:ids.join("|"),items:ids,score:score(focus,ids,state),label:evidence[i].fact+" ／ "+evidence[j].fact});
       }
     }
     if (pairs.length<3) throw new Error("証拠が不足しています");
@@ -102,7 +107,7 @@
   function assessment(d,state) {
     if (!validate(d,state) || d.stage!=="complete") throw new Error("推理はまだ完了していません");
     const pair=d.pair.split("|");
-    const weight=score(d.focus,pair);
+    const weight=score(d.focus,pair,state);
     const labels = facts(state).filter(x => pair.includes(x.id)).map(x=>x.fact);
     let status,detail,consequence;
     if (d.reading==="assert") {

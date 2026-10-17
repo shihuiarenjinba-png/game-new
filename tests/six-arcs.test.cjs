@@ -51,7 +51,10 @@ test("six different main mysteries are allocated 12 ways each without losing fac
     assert.equal(seeds.length,12,arc.id);
     const profiles=seeds.map(s=>cases.profile(cases.create(s)));
     assert.equal(new Set(profiles.map(x=>x.author.id)).size,4,arc.id+" writers");
-    assert.equal(new Set(profiles.map(x=>x.motive.id)).size,3,arc.id+" motives");
+    for(const writer of new Set(profiles.map(x=>x.author.id))){
+      assert.equal(new Set(profiles.filter(x=>x.author.id===writer).map(x=>x.motive.id)).size,
+        3,arc.id+" "+writer+" motive coverage");
+    }
     assert.equal(new Set(profiles.map(x=>x.incident.id)).size,3,arc.id+" side events");
     assert.equal(new Set(profiles.map(x=>x.ambience.id)).size,2,arc.id+" ambiences");
   }
@@ -69,7 +72,7 @@ test("six arcs all contain distinct questions, source clues and an earned ending
     assert.deepEqual(observed.map(x=>x.id),["arc-primary","arc-support","arc-counter"]);
     assert.equal(observed.some(x=>x.id==="arc-proof"),false);
     assert.equal(notes.observed(state).some(x=>x.id==="arc-proof"),false);
-    assert.ok(six.sceneText(state).includes("証言"));
+    assert.match(six.sceneText(state),/照合/);
     assert.equal(save8.validState(state),true);
     const decided=infer(state);
     const e=finalize(decided);

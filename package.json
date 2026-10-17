@@ -1,8 +1,8 @@
 {
   "name": "handover-room-prototype",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
-  "description": "Offline replayable mystery with causally coherent seeded cases; commercial HOLD",
+  "description": "Three authored convergent mystery arcs, varied replay cases, offline and commercial HOLD",
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "test:product": "node --test tests/v2.test.cjs",

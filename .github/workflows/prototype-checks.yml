@@ -17,6 +17,7 @@ on:
       - feature/handover-v13-hypothesis-revision
       - feature/handover-v14-consequence-simplicity
       - feature/handover-v15-local-qa-recovery
+      - feature/handover-v16-clear-ui-msix-readiness
   workflow_dispatch:
 
 permissions:

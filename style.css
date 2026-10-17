@@ -133,3 +133,8 @@ h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(24px,2.4
 .started .intro{display:none}
 .started .main{padding-top:18px}
 @media(max-width:800px){.started .main{padding-top:10px}}
+
+/* v0.4: a small back action only while reviewing the final deduction. */
+.deduction-back{border:0;background:transparent;color:var(--muted);font:12px/1.6 inherit;text-align:left;padding:11px 2px;margin-top:3px;cursor:pointer;align-self:flex-start}
+.deduction-back:hover{color:var(--highlight);text-decoration:underline}
+.deduction-back:focus-visible{outline:2px solid var(--highlight);outline-offset:3px}

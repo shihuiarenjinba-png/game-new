@@ -6,6 +6,7 @@ on:
       - feature/psychological-mystery-v02-product-quality
       - feature/psychological-mystery-v03-evidence-depth
       - feature/handover-v04-deduction
+      - feature/handover-v05-replayable-cases
   workflow_dispatch:
 
 permissions:

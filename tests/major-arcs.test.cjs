@@ -128,17 +128,17 @@ test("round rotation alternates major arcs without repeats across 72 runs",()=>{
 });
 test("no extra UI panel, navigational tabs or game checkout",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const code=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
+  const code=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.equal((html.match(/<nav\b/g)||[]).length,0);
-  for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v14.js"])
+  for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v16.js"])
     assert.ok(html.includes('src="./'+file+'"'));
   assert.match(code,/arcs?\.|grand\.sceneText/);
   assert.match(code,/grand\.nextSeed/);
   assert.doesNotMatch(code,/\bfetch\s*\(/);
   assert.doesNotMatch(html,/stripe|paypal|checkout/i);
   const cfg=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",STORE_PUBLISHER:"CN=Publisher",STORE_PUBLISHER_DISPLAY_NAME:"Publisher"});
-  for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v14.js"])
+  for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v16.js"])
     assert.ok(cfg.files.includes(file));
   assert.equal(cfg.files.includes("game-v5.js"),false);
   assert.ok(gate({},"win32").length>0);

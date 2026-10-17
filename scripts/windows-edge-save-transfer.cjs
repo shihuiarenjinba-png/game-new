@@ -5,8 +5,8 @@
  */
 const fs=require("node:fs"),os=require("node:os"),path=require("node:path");
 const {spawn}=require("node:child_process");
-const {blank,serialize,KEY}=require("../save-v13.js");
-const arcs=require("../deliberative-arcs-v13.js");
+const {blank,serialize,KEY}=require("../save-v14.js");
+const arcs=require("../arcs-v14.js");
 const base=path.join(__dirname,"..");
 const html=fs.readFileSync(path.join(base,"index.html"),"utf8");
 const wait=ms=>new Promise(ok=>setTimeout(ok,ms));
@@ -60,8 +60,8 @@ async function testCase(seed){
  const initial=serialize(blank(seed));
  const injected="<script>if(!localStorage.getItem("+JSON.stringify(KEY)+"))localStorage.setItem("+
    JSON.stringify(KEY)+","+JSON.stringify(initial)+");</script>";
- const content=html.replace('<script defer src="./game-v13.js"></script>',
-   injected+'\n<script defer src="./game-v13.js"></script>');
+ const content=html.replace('<script defer src="./game-v14.js"></script>',
+   injected+'\n<script defer src="./game-v14.js"></script>');
  if(content===html)throw Error("Entrypoint changed");
  fs.writeFileSync(fixture,content);
  const uri="file:///"+fixture.replace(/\\/g,"/");
@@ -99,7 +99,7 @@ async function testCase(seed){
   if(before.night1.history.length!==2)throw Error("Not at a 2-step checkpoint");
   await click(".data-tools summary");
   if(!await click("#export-save"))throw Error("Export control missing");
-  const filename="handover-room-save-v13.json";
+  const filename="handover-room-save-v14.json";
   const fileOut=path.join(downloads,filename);
   await until(()=>{
    if(!fs.existsSync(fileOut))return false;

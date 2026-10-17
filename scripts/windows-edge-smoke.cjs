@@ -4,8 +4,8 @@ const fs=require("node:fs"), os=require("node:os"), path=require("node:path");
 const {createHash}=require("node:crypto");
 const {spawnSync}=require("node:child_process");
 const root=path.join(__dirname,"..");
-const {blank,serialize,KEY}=require("../save-v13.js");
-const {active}=require("../deliberative-arcs-v13.js");
+const {blank,serialize,KEY}=require("../save-v14.js");
+const {active}=require("../arcs-v14.js");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const temporary=fs.mkdtempSync(path.join(os.tmpdir(),"handover-edge-smoke-"));
 const output=path.join(root,"browser-smoke-output");
@@ -60,8 +60,8 @@ function fixtureFor(seed){
     'if(!document.querySelector("#choices").textContent.includes("別の事件"))throw Error("missing replay");'+
     'document.body.dataset.smokeResult="SMOKE_PASS_'+seed+'";'+
   '}catch(e){document.body.dataset.smokeResult="SMOKE_FAIL_"+String(e.message||e);}});</script>';
-  const replaced=html.replace('<script defer src="./game-v13.js"></script>',
-    injected+'\n  <script defer src="./game-v13.js"></script>');
+  const replaced=html.replace('<script defer src="./game-v14.js"></script>',
+    injected+'\n  <script defer src="./game-v14.js"></script>');
   if(replaced===html)throw Error("Active game script not found in fixture");
   return replaced.replace("</body>",driver+"\n</body>");
 }

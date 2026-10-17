@@ -8,6 +8,7 @@ on:
       - feature/handover-v04-deduction
       - feature/handover-v05-replayable-cases
       - feature/handover-v06-major-payoff-arcs
+      - feature/handover-v07-causal-audit
   workflow_dispatch:
 
 permissions:

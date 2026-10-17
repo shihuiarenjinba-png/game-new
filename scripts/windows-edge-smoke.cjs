@@ -1,6 +1,7 @@
 "use strict";
 /* Windows hosted CI: Edge-rendered end-to-end smoke, not real-human or MSIX QA. */
 const fs=require("node:fs"), os=require("node:os"), path=require("node:path");
+const {createHash}=require("node:crypto");
 const {spawnSync}=require("node:child_process");
 const root=path.join(__dirname,"..");
 const {blank,serialize,KEY}=require("../save-v9.js");
@@ -93,6 +94,17 @@ try {
         if(cap.error||cap.status!==0||!fs.existsSync(png)){
           allPassed=false;
           process.stderr.write(tag+" capture FAILED "+(cap.error?.message||cap.status)+"\n");
+        }else{
+          const bytes=fs.readFileSync(png);
+          const valid=bytes.length>2048&&bytes.subarray(0,8).equals(
+            Buffer.from([137,80,78,71,13,10,26,10]));
+          if(!valid){allPassed=false;process.stderr.write(tag+" capture contains invalid PNG\n");}
+          else{
+            const width=bytes.readUInt32BE(16),height=bytes.readUInt32BE(20);
+            const sha=createHash("sha256").update(bytes).digest("hex");
+            process.stdout.write(tag+" capture validated "+width+"x"+height+
+              " png="+bytes.length+" bytes sha256="+sha+" (CI-local only)\n");
+          }
         }
       }
     }finally{fs.rmSync(fixture,{force:true});}

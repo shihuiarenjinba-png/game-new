@@ -35,6 +35,11 @@ test("Windows three-gate runner requires Node regression + GUI + real MSIX manif
   assert.ok(s.includes(name),name);
  assert.match(s,/if\(\$RunWack -and "WACK" -notin \$passes\)/);
  assert.match(s,/stale package forbidden/);
+ assert.match(s,/OVERALL_RESULT/);
+ assert.match(s,/PARTIAL_RUN/);
+ assert.match(s,/STORE_IDENTITY_NAME/);
+ assert.match(s,/STORE_PACKAGE_VERSION/);
+ assert.match(s,/if\(\$RunWack -and "WACK" -notin \$passes\)/);
  assert.match(s,/No automatic npm install/);
  assert.doesNotMatch(s,/Remove-AppxPackage|Uninstall-Package|Import-PfxCertificate|Start-Process\s+-Verb\s+RunAs/);
  assert.match(s,/INCOMPLETE_OR_FAILED/);

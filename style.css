@@ -148,3 +148,55 @@ h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(24px,2.4
 @media(min-width:801px){
  .started .evidence-panel{align-self:start;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
 }
+
+
+/* v0.16 — clear journey, one main page, no extra tabs or nested scrolling. */
+.flow-caption{
+  color:var(--highlight);
+  font-size:12px;
+  line-height:1.7;
+  margin:12px 26px 0;
+  overflow-wrap:anywhere;
+}
+.evidence-jump,.return-story{
+  cursor:pointer;
+  color:var(--highlight);
+  font-size:12px;
+  line-height:1.6;
+  text-align:left;
+  border:1px solid var(--line);
+  background:transparent;
+  padding:8px 12px;
+}
+.evidence-jump:hover,.return-story:hover{
+  color:var(--type);
+  border-color:var(--accent);
+  background:var(--panel-raised);
+}
+.evidence-jump:focus-visible,.return-story:focus-visible{outline:2px solid var(--highlight);outline-offset:3px}
+.return-story{margin-top:18px;align-self:flex-start}
+.option{padding-right:46px}
+.option-arrow{top:50%;transform:translateY(-50%);right:19px}
+.option-title{font-size:14px;line-height:1.65}
+.option-hint{font-size:12px;line-height:1.6}
+.narrative{font-size:15px}
+@media(min-width:801px){
+  /* The evidence list is collapsible already: avoid a second scrollbar. */
+  .started .evidence-panel{
+    position:static;
+    max-height:none;
+    overflow:visible;
+  }
+  .return-story{display:none}
+}
+@media(max-width:800px){
+  .flow-caption{margin:11px 18px 0}
+  .evidence-panel{scroll-margin-top:12px}
+  .evidence-jump{white-space:normal}
+}
+@media(max-width:440px){
+  .scene-top{gap:8px}
+  .scene-label{letter-spacing:.02em;line-height:1.5}
+  .evidence-jump{font-size:11px;padding:7px 9px}
+  .option{min-height:60px}
+}

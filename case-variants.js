@@ -181,9 +181,11 @@
           : infer==="balanced"
             ? "書けない部分を残したことで、次の調査員には確かめるべき問いが伝わった。"
             : "推理の詳しい記録は残されなかった。";
+      const side=has(m.history,"maho","why")?p.incident.answer:
+        "現場の小さな出来事について、聞き取る機会を逃した。"+p.incident.caution;
       if(isRevealed(c,state))return "【今回の事件で確かめられたこと】\n"+p.author.reveal+
         "\n【その人が隠したかったこと】\n"+p.motive.why+
-        "\n【別の小さな出来事】\n"+p.incident.answer+
+        "\n【別の小さな出来事】\n"+side+
         "\n【あなたの判断が残したこと】\n"+consequence+" "+inference;
       return "【今回の事件で残った問い】\n封筒の筆者は特定できなかった。ただ、"+p.motive.clue+
         "\n"+p.incident.caution+

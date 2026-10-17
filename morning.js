@@ -142,7 +142,21 @@
   }
   function view(s, firstNight) {
     if (!isValid(s, firstNight)) throw new Error("不正なセーブデータです");
-    if (s.scene === "epilogue") return { label: "翌朝 / 記録完了", title: ENDINGS[s.ending].title, body: ENDINGS[s.ending].text, question: "調査記録はここで閉じられる。", choices: [] };
+    if (s.scene === "epilogue") {
+      const trace = s.flags.includes("exposed")
+        ? "あの封筒の内容を現場に広めたことは、もう取り消せない。"
+        : s.flags.includes("care")
+          ? "差出人を確かめられない封筒は、誰にも見せないまま記録に残した。"
+          : "封筒に書いた人物と、その意図は最後まで確定しなかった。";
+      const voice = s.flags.includes("consent")
+        ? "佐原は引用の条件を示した。それが全情報の公開を認めたことにはならない。"
+        : s.flags.includes("voice")
+          ? "佐原が口にした事実は記録できた。ただし、本人の意思だけで全てを説明することはできなかった。"
+          : "佐原の発言をどこまで他者に伝えてよいか、十分に確かめられなかった。";
+      return { label: "翌朝 / 記録完了", title: ENDINGS[s.ending].title,
+        body: ENDINGS[s.ending].text + "\n\nあなたの調査が残したもの。\n" + trace + "\n" + voice,
+        question: "調査記録はここで閉じられる。", choices: [] };
+    }
     const sc = SCENES[s.scene];
     let body = sc.body;
     if (s.scene === "letter" && firstNight.ending === "closed")

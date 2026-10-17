@@ -2,10 +2,11 @@
 (function(root,factory){
   const old=typeof module!=="undefined"&&module.exports?require("./save-v4.js"):root.HandoverSaveV4;
   const cases=typeof module!=="undefined"&&module.exports?require("./case-variants.js"):root.HandoverCases;
-  const api=factory(old,cases);
+  const puzzle=typeof module!=="undefined"&&module.exports?require("./deduction.js"):root.HandoverDeduction;
+  const api=factory(old,cases,puzzle);
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
   root.HandoverSaveV5=api;
-})(typeof globalThis!=="undefined"?globalThis:this,function(old,cases){
+})(typeof globalThis!=="undefined"?globalThis:this,function(old,cases,puzzle){
   "use strict";
   const FORMAT="handover-room-offline-backup",VERSION=5,MAX_BYTES=65536;
   const KEY="handover-room-prototype-v5",LEGACY_KEY=old.KEY,
@@ -14,7 +15,16 @@
     if(!s || typeof s!=="object"||Array.isArray(s)||
       Object.keys(s).sort().join(",")!=="case,deduction,morning,night1")return false;
     if(!cases.valid(s.case))return false;
-    return old.validState({night1:s.night1,morning:s.morning,deduction:s.deduction});
+    // Validate the legacy chapter history independently, then validate procedural clues
+    // using the complete case record. Do not strip 'case' before deduction validation.
+    const report=!!s.morning && s.morning.scene==="report";
+    const ended=!!s.morning && s.morning.scene==="epilogue";
+    const base={night1:s.night1,morning:s.morning,deduction:report?puzzle.start():null};
+    if(!old.validState(base))return false;
+    if(!report&&!ended)return s.deduction===null;
+    if(ended&&s.deduction===null)return true; // old completed campaign
+    if(!puzzle.validate(s.deduction,s))return false;
+    return ended?s.deduction.stage==="complete":true;
   }
   function blank(seed){
     const s={night1:old.blank().night1,morning:null,deduction:null,case:cases.create(seed)};

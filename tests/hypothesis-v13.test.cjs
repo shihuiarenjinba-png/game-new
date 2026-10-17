@@ -94,6 +94,34 @@ test("the first provisional guess creates three distinct later conversation reac
   lines.forEach(x=>assert.ok(x.length>35));
  }
 });
+test("missing central document never exposes route-specific provisional explanations",()=>{
+ for(let seed=0;seed<72;seed++){
+  const a=arcs.active(save.blank(seed));
+  const wrong=a.entry==="wording"?"stoppage":"wording";
+  let s=save.blank(seed);
+  for(const choice of ["listen",wrong,"repeat","agreement","amend"])
+   s={...s,night1:first.advance(s.night1,choice)};
+  assert.equal(s.night1.scene,"ending");
+  assert.equal(save.validState(s),true);
+  const options=mid.beginning(s);
+  assert.ok(!options.body.includes(a.first));
+  assert.ok(options.choices.every(o=>!o.label.includes(a.turn)));
+  s=mid.chooseInitial(s,"hypothesis:unknown");
+  s={...s,morning:morning.fresh(s.night1)};
+  for(const choice of ["preserve","name","sign"]){
+   const m=morning.advance(s.morning,s.night1,choice);
+   s={...s,morning:m,deduction:m.scene==="report"?puzzle.start():s.deduction};
+  }
+  const next=mid.second(s);
+  assert.ok(!next.body.includes(a.first));
+  assert.ok(!next.body.includes(a.second));
+  assert.ok(!next.body.includes(a.turn));
+  assert.equal(arcs.status(s).source,false);
+  assert.deepEqual(arcs.observed(s),[]);
+  const revised=mid.chooseRevision(s,"revision:suspend");
+  assert.equal(save.validState(revised),true);
+ }
+});
 test("hypothesis cannot itself become proof; choosing a weak pair leaves the big mystery unresolved",()=>{
  for(let seed=0;seed<72;seed++){
   for(const initial of mid.INITIAL)for(const revision of mid.REVISION){

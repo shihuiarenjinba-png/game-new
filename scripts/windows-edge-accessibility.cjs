@@ -6,8 +6,8 @@
 const fs=require("node:fs"),os=require("node:os"),path=require("node:path");
 const {spawn}=require("node:child_process");
 const root=path.join(__dirname,"..");
-const {blank,serialize,KEY}=require("../save-v9.js");
-const arcs=require("../immersive-arcs.js");
+const {blank,serialize,KEY}=require("../save-v13.js");
+const arcs=require("../deliberative-arcs-v13.js");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 if(process.platform!=="win32"){process.stderr.write("Windows-only Edge QA\n");process.exit(2);}
 const paths=[
@@ -76,8 +76,8 @@ function fixture(seed){
  const begin=JSON.stringify(serialize(blank(seed)));
  const script='<script>if(!localStorage.getItem('+JSON.stringify(KEY)+'))'+
    'localStorage.setItem('+JSON.stringify(KEY)+','+begin+');</script>';
- return html.replace('<script defer src="./game-v10.js"></script>',
-   script+'\n<script defer src="./game-v10.js"></script>');
+ return html.replace('<script defer src="./game-v13.js"></script>',
+   script+'\n<script defer src="./game-v13.js"></script>');
 }
 async function run(x){
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),"handover-keyboard-"));
@@ -109,7 +109,7 @@ async function run(x){
   await ready();
   const a=arcs.active(blank(x.seed)),ids=routes[a.id];
   const seq=[0,indexes[ids[0]],indexes[ids[1]],indexes[ids[2]],0,
-    0,2,indexes[ids[3]],indexes[ids[4]],indexes[a.focus],1,1,0];
+    1,0,2,indexes[ids[3]],indexes[ids[4]],0,indexes[a.focus],1,1,0];
   // Native browser keyboard: heading -> Tab -> first choice -> Enter.
   await cdp.js('document.querySelector("#heading").focus()');
   await cdp.call("Input.dispatchKeyEvent",{type:"rawKeyDown",key:"Tab",code:"Tab",windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
@@ -122,7 +122,7 @@ async function run(x){
   if(!await cdp.js('JSON.parse(localStorage.getItem('+JSON.stringify(KEY)+')).data.night1.history.length===1'))
     throw Error("Native keyboard Enter did not advance the game");
   // Proceed into morning until the witness stage, then force a real page reload.
-  for(let step=1;step<7;step++){
+  for(let step=1;step<8;step++){
     const idx=seq[step];
     const outcome=await cdp.js('(()=>{const b=document.querySelectorAll("#choices > button.option")['+idx+'];if(!b)return "NO_OPTION";b.click();return "OK";})()');
     if(outcome!=="OK")throw Error("Missing option "+idx+" at step "+step);
@@ -132,10 +132,10 @@ async function run(x){
   if(!stateBefore.morning||stateBefore.morning.history.length!==1)
     throw Error("Unexpected state before reload");
   await cdp.call("Page.reload",{ignoreCache:true});
-  await until(async()=>await cdp.js('document.readyState==="complete" && document.querySelector("#stage")?.textContent.includes("控室") && !!document.querySelectorAll("#choices > button.option").length'),15000);
+  await until(async()=>await cdp.js('document.readyState==="complete" && JSON.parse(localStorage.getItem("handover-room-prototype-v13")).data.morning?.history.length===1 && !!document.querySelectorAll("#choices > button.option").length'),15000);
   const saveAfter=await cdp.js('localStorage.getItem('+JSON.stringify(KEY)+')');
   if(saveAfter!==saveBefore)throw Error("Reload changed saved choice history or identity");
-  for(let step=7;step<seq.length;step++){
+  for(let step=8;step<seq.length;step++){
     const outcome=await cdp.js('(()=>{const b=document.querySelectorAll("#choices > button.option")['+seq[step]+'];if(!b)return "NO_OPTION";b.click();return "OK";})()');
     if(outcome!=="OK")throw Error("Missing option after reload at step "+step);
   }

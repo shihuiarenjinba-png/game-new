@@ -21,6 +21,7 @@ if([IO.Path]::GetExtension($full).ToLowerInvariant() -ne ".msix"){
  throw "指定するファイルはMSIXのみです（MSIXUPLOADはインストール不可）"
 }
 Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip=[IO.Compression.ZipFile]::OpenRead($full)
 try {
  $entry=$zip.GetEntry("AppxManifest.xml")

@@ -3,7 +3,7 @@
  * 外部サービス、AI、乱数、個人データ送信なし。
  */
 (function(root, factory) {
-  const notes = typeof module !== "undefined" && module.exports ? require("./case-notes.js") : root.HandoverCaseNotes;
+  const notes = typeof module !== "undefined" && module.exports ? require("./case-notes-v5.js") : root.HandoverCaseNotesV5;
   const api = factory(notes);
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.HandoverDeduction = api;
@@ -17,7 +17,7 @@
       assert: "班長が全員に嘘を強制したと断定する",
       balanced: "文面の一致と編集経緯を記し、虚偽の指示は未確認とする",
       dismiss: "文面の一致は調べる必要がないとする",
-      needed: [["wording","draft"]]
+      needed: [["wording","draft"],["case-record","case-witness"]]
     },
     agency: {
       label: "佐原は、本当に自由に続行を選べたのか",
@@ -25,7 +25,7 @@
       assert: "本人は無理やり続行させられたと断定する",
       balanced: "本人の発言を記し、断る自由があったかは未確認とする",
       dismiss: "本人が続けると言った以上、問題はないとする",
-      needed: [["voice","stoppage"], ["voice","confession"]]
+      needed: [["voice","stoppage"], ["voice","confession"],["case-letter","case-witness"]]
     },
     pressure: {
       label: "誰も命令しないのに、なぜ止められなかったのか",
@@ -33,7 +33,7 @@
       assert: "班長の停止禁止命令があったと断定する",
       balanced: "職場の圧力を検討事項とし、明確な命令の有無は未確認とする",
       dismiss: "命令が見つからない以上、職場の圧力もないとする",
-      needed: [["renewals","quota"],["renewals","distance2"],["quota","distance2"]]
+      needed: [["renewals","quota"],["renewals","distance2"],["quota","distance2"],["case-record","case-side"]]
     }
   });
   const READINGS = ["assert","balanced","dismiss"];
@@ -58,7 +58,9 @@
       }
     }
     if (pairs.length<3) throw new Error("証拠が不足しています");
-    const strong = pairs.find(x => x.score===2) || pairs.find(x=>x.score===1) || pairs[0];
+    const strong = pairs.find(x => x.score===2 && x.items.includes("case-witness")) ||
+      pairs.find(x => x.score===2 && x.items.includes("case-side")) ||
+      pairs.find(x => x.score===2) || pairs.find(x=>x.score===1) || pairs[0];
     const weak = pairs.find(x => x.score===0 && x.id!==strong.id) ||
       pairs.find(x => x.id!==strong.id);
     const rest = pairs.find(x => x.id!==weak.id && x.id!==strong.id && x.score===1) ||

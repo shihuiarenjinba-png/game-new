@@ -60,8 +60,8 @@ async function testCase(seed){
  const initial=serialize(blank(seed));
  const injected="<script>if(!localStorage.getItem("+JSON.stringify(KEY)+"))localStorage.setItem("+
    JSON.stringify(KEY)+","+JSON.stringify(initial)+");</script>";
- const content=html.replace('<script defer src="./game-v14.js"></script>',
-   injected+'\n<script defer src="./game-v14.js"></script>');
+ const content=html.replace('<script defer src="./game-v16.js"></script>',
+   injected+'\n<script defer src="./game-v16.js"></script>');
  if(content===html)throw Error("Entrypoint changed");
  fs.writeFileSync(fixture,content);
  const uri="file:///"+fixture.replace(/\\/g,"/");

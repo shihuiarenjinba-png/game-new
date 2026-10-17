@@ -39,10 +39,3 @@ jobs:
           node-version: '22'
       - name: Verify six routes in Windows Edge
         run: node scripts/windows-edge-smoke.cjs
-      - name: Retain screenshot evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-edge-v10-screenshots
-          path: browser-smoke-output/*.png
-          if-no-files-found: ignore

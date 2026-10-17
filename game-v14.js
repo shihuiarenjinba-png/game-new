@@ -86,7 +86,7 @@
 
   function draw() {
     const inMorning = isMorning();
-    const isNew = state.arcMode === "responsive";
+    const isNew = ["responsive","deliberative"].includes(state.arcMode);
     const needsTheory = isNew && !inMorning && state.night1.scene === "ending" &&
       state.midpoint.initial === null;
     const needsRevision = isNew && inMorning && state.morning.scene === "report" &&

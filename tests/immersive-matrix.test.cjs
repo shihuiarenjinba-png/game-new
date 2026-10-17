@@ -31,8 +31,7 @@ test("every 52,488 seeded player-history combination has guarded scene knowledge
     for(const supervisor of supervisorOptions) {
       const n=night(["formal",record,colleague,supervisor,"amend"]);
       const entry={night1:n,morning:null,case:caseData,deduction:null,arcMode:"immersive"};
-      const nightSentence=beats.line({...entry,night1:{...n,scene:"judgment",ending:null,
-        history:n.history.slice(0,4)}}); // A consistent stage, without future information.
+      const nightSentence=beats.line(entry); // Actual completed first-night history.
       assert.ok(nightSentence.length>=0);
       for(const letter of letterOptions)
       for(const maho of mahoOptions)

@@ -10,6 +10,7 @@ on:
       - feature/handover-v06-major-payoff-arcs
       - feature/handover-v07-causal-audit
       - feature/handover-v08-six-arcs
+      - feature/handover-v09-character-reactions
   workflow_dispatch:
 
 permissions:

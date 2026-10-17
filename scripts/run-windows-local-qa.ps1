@@ -86,8 +86,8 @@ try {
   }
   $result = [ordered]@{
     project="Handover Room — game-new"
-    version="v0.15 QA instructions based on v0.14 game"
-    source_branch="feature/handover-v15-local-qa-recovery"
+    version="v0.16 UI and MSIX readiness QA candidate"
+    source_branch="feature/handover-v16-clear-ui-msix-readiness"
     timestamp=(Get-Date).ToString("o")
     os=[Environment]::OSVersion.VersionString
     node=$nodeVersion

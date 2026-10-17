@@ -115,7 +115,7 @@
       if (variant) {
         storyText += cases.isRevealed(state.case,state)
           ? "\n\n【もう一つの小さな謎】 匿名の書き置きは" + variant.author.name +
-              "が残した。理由は、" + variant.motive.why
+              "が残したと確認できた。ただし本当の動機については、まだ調べきれていない。"
           : "\n\n【まだ残る小さな謎】 匿名の書き置きの筆者までは確かめられなかった。";
       }
     }

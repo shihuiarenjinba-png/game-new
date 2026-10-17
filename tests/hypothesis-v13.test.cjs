@@ -170,9 +170,9 @@ test("old v9 saved stories remain identical without novel checkpoints or changed
 });
 test("new interface keeps one story panel, authoring and guarded commercial packaging",()=>{
  const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
- const game=fs.readFileSync(path.join(__dirname,"..","game-v13.js"),"utf8");
+ const game=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
  const files=["deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js",
-  "reading-v13.js","save-v13.js","game-v13.js"];
+  "reading-v13.js","save-v13.js","midpoint-v14.js","arcs-v14.js","notes-v14.js","consequences-v14.js","save-v14.js","reading-v14.js","game-v14.js"];
  for(const f of files)assert.ok(html.includes('src="./'+f+'"'));
  assert.ok(html.indexOf("deliberative-arcs-v13.js")<html.indexOf("deduction.js"));
  assert.equal((html.match(/class="story-panel"/g)||[]).length,1);

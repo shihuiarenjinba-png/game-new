@@ -64,6 +64,15 @@ test("earlier non-checkpoint saves use 12 step scale, not invented theory decisi
   assert.ok(!j.guide.includes("仮説を立てる"));
  }
 });
+test("legacy finished saves without later deduction are shown as complete 9/9",()=>{
+ const s={arcMode:"legacy",night1:{history:Array(5).fill("x")},
+  morning:{scene:"epilogue",history:["x","y","z","context"]},
+  deduction:null};
+ const p=journey.describe(s);
+ assert.equal(p.now,9);
+ assert.equal(p.max,9);
+ assert.equal(p.current,"事件の結末");
+});
 test("screen has one primary story, visible next action, no additional tabs",()=>{
  const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
  const game=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");

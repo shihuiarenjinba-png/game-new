@@ -192,7 +192,7 @@ test("the only UI is existing story and evidence panel, no new tabs",()=>{
   assert.ok(!html.includes('src="./game-v4.js"'));
   assert.match(game,/別の事件を調査する/);
   assert.match(game,/同じ事件を最初から調べ直す/);
-  assert.match(game,/cases\.nextSeed/);
+  assert.match(game,/grand\.nextSeed/);
   assert.doesNotMatch(game,/\bfetch\s*\(/);
   const config=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",STORE_PUBLISHER:"CN=Publisher",STORE_PUBLISHER_DISPLAY_NAME:"Publisher"});
   for(const x of ["case-variants.js","case-notes-v5.js","major-arcs.js","case-notes-v6.js","save-v5.js","save-v6.js","game-v6.js"]) assert.ok(config.files.includes(x));

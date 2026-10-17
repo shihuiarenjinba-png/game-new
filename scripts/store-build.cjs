@@ -106,6 +106,7 @@ function run() {
   }
   const generated = path.join(root,"electron-builder.store.generated.json");
   fs.writeFileSync(generated, JSON.stringify(makeConfig(process.env), null, 2) + "\n", {flag:"w"});
+  const buildStartedAt=Date.now();
   const child = spawnSync(process.execPath, [builder, "--win", "msix", "--x64", "--config", generated, "--publish", "never"],
     {cwd:root,stdio:"inherit",shell:false});
   if (child.error || child.status !== 0) {
@@ -136,7 +137,8 @@ function run() {
   if(!packages.length)errors.push("MSIXファイルがありません");
   if(!uploads.length)errors.push("Store用MSIXUPLOADファイルがありません");
   const details=artifacts.map(name=>{
-    const full=path.join(folder,name),size=fs.statSync(full).size;
+    const full=path.join(folder,name),stat=fs.statSync(full),size=stat.size;
+    if(stat.mtimeMs < buildStartedAt-2000)errors.push("前回の古い成果物が残っています: "+name);
     const hash=crypto.createHash("sha256").update(fs.readFileSync(full)).digest("hex");
     if(size<1024)errors.push("パッケージが小さすぎます: "+name);
     return {name,size,sha256:hash};

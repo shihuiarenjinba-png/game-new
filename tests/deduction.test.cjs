@@ -156,8 +156,8 @@ test("completed v0.2 saves preserve their outcome without forced new gameplay",(
 
 test("the markup presents deduction in the same existing choice panel, no new tabs",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const game=fs.readFileSync(path.join(__dirname,"..","game-v4.js"),"utf8");
-  const paths=["story.js","morning.js","save-guard.js","case-notes.js","deduction.js","save-v4.js","game-v4.js"];
+  const game=fs.readFileSync(path.join(__dirname,"..","game-v5.js"),"utf8");
+  const paths=["story.js","morning.js","save-guard.js","case-notes.js","case-variants.js","case-notes-v5.js","deduction.js","save-v4.js","save-v5.js","game-v5.js"];
   let last=-1;
   for(const p of paths) {
     const at=html.indexOf('src="./'+p+'"');

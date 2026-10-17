@@ -96,7 +96,7 @@
       fact:arc.second,detail:arc.second,caveat:"まだ反対側の証言が足りない。"});
     if(s.counter) a.push({id:"arc-counter",title:"解釈を変える証言",
       fact:arc.turn,detail:arc.turn,caveat:"資料の存在だけでは、誰が責任を負うかは決まらない。"});
-    if(s.full && state.morning && state.morning.scene==="epilogue")
+    if(s.full && state.morning && ["report","epilogue"].includes(state.morning.scene))
       a.push({id:"arc-proof",title:arc.evidenceTitle,
         fact:arc.proof,detail:arc.proof,
         caveat:"この証拠で説明できることと、負傷の直接原因を立証することは別だ。"});

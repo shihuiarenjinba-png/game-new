@@ -64,7 +64,7 @@
 
   function revealStory() {
     heading.focus({ preventScroll: true });
-    heading.scrollIntoView({ block: "start", behavior: "instant" });
+    heading.scrollIntoView({ block: "start", behavior: "auto" });
   }
 
   function draw() {
@@ -186,6 +186,7 @@
       : "情報が足りないときは、結論を急がないことも選択です。");
     if (storageStatus) storageStatus.textContent = "この端末にだけ保存します。外部への送信はありません。";
     document.body.classList.toggle("finished", finished || isFirstEnd());
+    document.body.classList.toggle("started", step > 0);
   }
 
   function resetGame() {

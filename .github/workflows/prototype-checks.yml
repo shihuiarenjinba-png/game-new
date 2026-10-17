@@ -15,6 +15,7 @@ on:
       - feature/handover-v11-accessibility-save-qa
       - feature/handover-v12-save-transfer-replay-qa
       - feature/handover-v13-hypothesis-revision
+      - feature/handover-v14-consequence-simplicity
   workflow_dispatch:
 
 permissions:

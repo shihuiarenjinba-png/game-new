@@ -57,6 +57,7 @@ function paint(width,height){
  return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),
  chunk("IHDR",h),chunk("IDAT",zlib.deflateSync(b,{level:9})),chunk("IEND",Buffer.alloc(0))]);
 }
+function run(){
 fs.mkdirSync(output,{recursive:true});
 for(const [name,[w,h]] of Object.entries(specs)){
  const filename=path.join(output,name);
@@ -65,3 +66,6 @@ for(const [name,[w,h]] of Object.entries(specs)){
  process.stdout.write("BRAND_CANDIDATE "+name+" "+w+"x"+h+" "+content.length+" bytes\n");
 }
 process.stdout.write("Created candidate assets ONLY. Store art approval and Package Identity are separate gates.\n");
+}
+if(require.main===module)run();
+module.exports={paint,specs,crc32,run};

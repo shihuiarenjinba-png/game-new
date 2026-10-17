@@ -93,7 +93,11 @@
     stage.textContent = screen.label;
     heading.textContent = screen.title;
     const contextText = window.HandoverCaseNotesV6.emphasis(state);
-    const caseText = cases.sceneText(state.case,state);
+    // At the final two scenes the authored main revelation gets priority.
+    // The small randomized mystery remains a concise secondary thread.
+    const mainClimax = state.arcMode === "major" && inMorning &&
+      ["report","epilogue"].includes(state.morning.scene);
+    const caseText = mainClimax ? "" : cases.sceneText(state.case,state);
     const majorText = grand.sceneText(state);
     let storyText = screen.body + (!doingDeduction && contextText ? "\n\n" + contextText : "") + (caseText ? "\n\n" + caseText : "") + (majorText ? "\n\n" + majorText : "");
     if (finished && state.deduction && state.deduction.stage === "complete") {
@@ -105,6 +109,15 @@
       const review = deduction.assessment(state.deduction, state);
       storyText = "照合した証拠についての判断： " + review.status + "\n" + review.detail +
         "\n\n" + storyText;
+    }
+    if (mainClimax && finished) {
+      const variant=cases.profile(state.case);
+      if (variant) {
+        storyText += cases.isRevealed(state.case,state)
+          ? "\n\n【もう一つの小さな謎】 匿名の書き置きは" + variant.author.name +
+              "が残した。理由は、" + variant.motive.why
+          : "\n\n【まだ残る小さな謎】 匿名の書き置きの筆者までは確かめられなかった。";
+      }
     }
     narrative.textContent = storyText;
     question.textContent = screen.question;

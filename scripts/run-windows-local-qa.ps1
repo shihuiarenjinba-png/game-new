@@ -58,8 +58,9 @@ try {
     $failures++
   } else {
     $major = if ($nodeVersion -match '^v(\d+)') { [int]$Matches[1] } else { 0 }
-    if ($major -lt 22) {
-      Add-Result "Node version" "BLOCKED" ($nodeVersion + " (Node.js 22+ recommended to match CI)") ""
+    $minor = if ($nodeVersion -match '^v\d+\.(\d+)') { [int]$Matches[1] } else { 0 }
+    if ($major -lt 22 -or ($major -eq 22 -and $minor -lt 12)) {
+      Add-Result "Node version" "BLOCKED" ($nodeVersion + " (Node.js 22.12+ required for MSIX beta toolchain)") ""
       $failures++
     } else {
       Run-Test "Narrative / deductions / old saves / logic regression" "test"

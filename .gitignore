@@ -1,0 +1,11 @@
+node_modules/
+dist-msix/
+dist/
+electron-builder.store.generated.json
+*.msix
+*.msixupload
+*.msixbundle
+*.pfx
+*.p12
+*.cer
+*.key

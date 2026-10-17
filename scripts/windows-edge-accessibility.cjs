@@ -102,6 +102,7 @@ async function run(x){
   },12000);
   cdp=await connect(target.webSocketDebuggerUrl);
   await cdp.call("Page.enable");await cdp.call("Runtime.enable");
+  await cdp.call("Emulation.setDeviceMetricsOverride",{width:x.width,height:x.height,deviceScaleFactor:Number(x.scale),mobile:false});
   async function ready(){
    return until(async()=>await cdp.js('document.readyState==="complete" && !!document.querySelector("#choices .option")'),12000);
   }
@@ -142,6 +143,7 @@ async function run(x){
   if(review.saved.morning?.scene!=="epilogue"||!review.story.includes("【大きな回収"))
     throw Error("Earned finale lost during real page reload");
   if(review.saved.case.seed!==x.seed)throw Error("Random seed changed across reload");
+  if(Math.abs(review.viewport-x.width)>1)throw Error("Browser CSS viewport mismatch "+review.viewport+" expected "+x.width);
   if(review.bodyWidth>review.viewport+4)throw Error("Horizontal overflow "+review.bodyWidth+"/"+review.viewport);
   if(review.font<13.5)throw Error("Narrative became too small "+review.font);
   if(!review.focusable||review.buttons<2||review.files<1)throw Error("Missing navigable buttons or evidence");

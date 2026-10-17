@@ -161,5 +161,12 @@
       body:result.detail+"\n\nここで終わりではない。誰を守り、どう記録するかは、あなたの判断に残されている。",
       question:"この推理を踏まえて、最終報告を決めます。",choices:[]};
   }
-  return Object.freeze({FOCI,start,validate,advance,assessment,display,options});
+  function rewind(d,state) {
+    if (!validate(d,state)) throw new Error("推理記録の整合性を確認できません");
+    if (d.stage === "focus") return d;
+    if (d.stage === "pair") return start();
+    if (d.stage === "reading") return {stage:"pair",focus:d.focus,pair:null,reading:null};
+    return {stage:"reading",focus:d.focus,pair:d.pair,reading:null};
+  }
+  return Object.freeze({FOCI,start,validate,advance,rewind,assessment,display,options});
 });

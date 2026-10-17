@@ -164,8 +164,8 @@ test("wrongly claimed evidence cannot be inserted through save JSON",()=>{
 });
 test("simple UI and guarded Store manifest remain intact",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const game=fs.readFileSync(path.join(__dirname,"..","game-v9.js"),"utf8");
-  for(const f of ["immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v9.js","game-v9.js"])
+  const game=fs.readFileSync(path.join(__dirname,"..","game-v10.js"),"utf8");
+  for(const f of ["immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v9.js","reading-v10.js","game-v10.js"])
     assert.ok(html.includes('src="./'+f+'"'),f);
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.equal((html.match(/<nav\b/g)||[]).length,0);
@@ -175,7 +175,7 @@ test("simple UI and guarded Store manifest remain intact",()=>{
   assert.doesNotMatch(html,/paypal|stripe|checkout/i);
   const cfg=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",
     STORE_PUBLISHER:"CN=Vendor",STORE_PUBLISHER_DISPLAY_NAME:"Vendor"});
-  for(const f of ["immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v9.js","game-v9.js"])
+  for(const f of ["immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v9.js","reading-v10.js","game-v10.js"])
     assert.ok(cfg.files.includes(f),f);
   assert.ok(gate({},"win32").length>0);
 });

@@ -74,7 +74,8 @@
     const step = state.night1.history.length + (inMorning ? state.morning.history.length : 0);
     stage.textContent = screen.label;
     heading.textContent = screen.title;
-    narrative.textContent = screen.body;
+    const contextText = window.HandoverCaseNotes.emphasis(state);
+    narrative.textContent = screen.body + (contextText ? "\n\n" + contextText : "");
     question.textContent = screen.question;
     choices.replaceChildren();
 
@@ -156,9 +157,24 @@
       clues.append(element("p", "empty", "自分で確認した記録だけが、ここに残ります。"));
     } else {
       for (const clue of discovered) {
-        const note = element("article", "clue");
-        note.append(element("div", "clue-title", clue.title), element("p", "clue-description", clue.detail));
-        if (clue.unique === lastFinding) note.classList.add("new");
+        const note = element("details", "clue");
+        const headline = element("summary", "clue-title", clue.title);
+        const body = element("div", "clue-inner");
+        const related = window.HandoverCaseNotes.observed(state).find(item => item.id === (
+          clue.unique === "m:distance" ? "distance2" : clue.id
+        ));
+        body.append(element("p", "clue-description", clue.detail));
+        if (related) {
+          body.append(
+            element("p", "clue-caveat-label", "まだ確定していないこと"),
+            element("p", "clue-caveat", related.caveat)
+          );
+        }
+        note.append(headline, body);
+        if (clue.unique === lastFinding) {
+          note.classList.add("new");
+          note.open = true;
+        }
         clues.append(note);
       }
     }

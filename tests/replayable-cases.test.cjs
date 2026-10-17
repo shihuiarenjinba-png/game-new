@@ -87,6 +87,19 @@ test("wrong evidence or questioning never magically reveals the author",()=>{
   }
 });
 
+test("independent side mysteries are not resolved without the relevant question",()=>{
+  const caseIndex=1; // Maho packet: the writer can confess to a private approach.
+  const profile=cases.profile(cases.create(caseIndex));
+  const n=night(["listen",profile.author.trigger,"private","author","amend"]);
+  const m=day(n,["examine","private","ask","context"]);
+  const complete={night1:n,morning:m,case:cases.create(caseIndex),deduction:null};
+  assert.equal(cases.isRevealed(complete.case,complete),true);
+  const epilogue=cases.sceneText(complete.case,complete);
+  assert.match(epilogue,/聞き取る機会を逃した/);
+  assert.ok(!epilogue.includes(profile.incident.answer));
+  assert.equal(cases.observed(complete.case,complete).some(x=>x.id==="case-side"),false);
+});
+
 test("the source list respects time causality and only discovered material",()=>{
   const seed=0, profile=cases.profile(cases.create(seed));
   let n=first.fresh();

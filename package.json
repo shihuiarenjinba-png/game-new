@@ -10,7 +10,8 @@
     "build:msix": "node scripts/store-build.cjs",
     "test:edge:win": "node scripts/windows-edge-smoke.cjs",
     "test:edge:accessibility:win": "node scripts/windows-edge-accessibility.cjs",
-    "test:edge:save:win": "node scripts/windows-edge-save-transfer.cjs"
+    "test:edge:save:win": "node scripts/windows-edge-save-transfer.cjs",
+    "audit:story-volume": "node scripts/story-volume-audit.cjs"
   },
   "engines": {
     "node": ">=20"

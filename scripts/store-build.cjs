@@ -19,7 +19,7 @@ function gate(env, platform = process.platform) {
     issues.push("STORE_PUBLISHER は証明書に一致する CN=... 形式で設定してください");
   if (platform !== "win32") issues.push("MSIXのビルドはWindows実機上で実行してください");
   const required = ["index.html", "style.css", "story.js", "morning.js",
-    "save-guard.js", "game-v2.js", "desktop/main.cjs"];
+    "save-guard.js", "case-notes.js", "game-v2.js", "desktop/main.cjs"];
   for (const name of required)
     if (!fs.existsSync(path.join(root, name))) issues.push("不足ファイル: " + name);
   const logoFiles = ["StoreLogo.png", "Square150x150Logo.png", "Square44x44Logo.png", "Wide310x150Logo.png"];
@@ -33,7 +33,7 @@ function makeConfig(env) {
     appId: "jp.handoverroom.game",
     productName: "引継ぎ室",
     asar: true,
-    files: ["index.html", "style.css", "story.js", "morning.js", "save-guard.js", "game-v2.js", "desktop/main.cjs", "package.json"],
+    files: ["index.html", "style.css", "story.js", "morning.js", "save-guard.js", "case-notes.js", "game-v2.js", "desktop/main.cjs", "package.json"],
     directories: {output: "dist-msix", buildResources: "build"},
     toolsets: {winCodeSign: "1.1.0"},
     win: {target: [{target:"msix", arch:["x64"]}]},

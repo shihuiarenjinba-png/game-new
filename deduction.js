@@ -63,7 +63,9 @@
       }
     }
     if (pairs.length<3) throw new Error("証拠が不足しています");
-    const strong = pairs.find(x => x.score===2 && x.items.includes("case-witness")) ||
+    const strong = pairs.find(x => x.score===2 && x.items.includes("arc-proof")) ||
+      pairs.find(x => x.score===2 && x.items.includes("arc-counter")) ||
+      pairs.find(x => x.score===2 && x.items.includes("case-witness")) ||
       pairs.find(x => x.score===2 && x.items.includes("case-side")) ||
       pairs.find(x => x.score===2) || pairs.find(x=>x.score===1) || pairs[0];
     const weak = pairs.find(x => x.score===0 && x.id!==strong.id) ||

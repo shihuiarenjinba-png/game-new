@@ -12,6 +12,7 @@ on:
       - feature/handover-v08-six-arcs
       - feature/handover-v09-character-reactions
       - feature/handover-v10-reading-windows-smoke
+      - feature/handover-v11-accessibility-save-qa
   workflow_dispatch:
 
 permissions:
@@ -39,3 +40,5 @@ jobs:
           node-version: '22'
       - name: Verify six routes in Windows Edge
         run: node scripts/windows-edge-smoke.cjs
+      - name: Verify native keyboard and reload under display scaling
+        run: node scripts/windows-edge-accessibility.cjs

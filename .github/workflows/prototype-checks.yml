@@ -18,6 +18,7 @@ on:
       - feature/handover-v14-consequence-simplicity
       - feature/handover-v15-local-qa-recovery
       - feature/handover-v16-clear-ui-msix-readiness
+      - feature/handover-v17-brand-store-audit
   workflow_dispatch:
 
 permissions:
@@ -36,6 +37,8 @@ jobs:
         run: npm test
       - name: Report objective six-route text volume
         run: npm run audit:story-volume
+      - name: Full release code and brand audit (Store remains HOLD)
+        run: npm run audit:store-release
 
   windows-edge:
     runs-on: windows-latest

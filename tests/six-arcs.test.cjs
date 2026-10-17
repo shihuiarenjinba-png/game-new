@@ -211,8 +211,8 @@ test("all authored results distinguish decision consequences without asserting u
 
 test("common UI remains one story and folded notes, and Store gate is unchanged",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const js=fs.readFileSync(path.join(__dirname,"..","game-v13.js"),"utf8");
-  for(const file of ["six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v13.js"])
+  const js=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
+  for(const file of ["six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v14.js"])
     assert.ok(html.includes('src="./'+file+'"'));
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.equal((html.match(/<nav\b/g)||[]).length,0);
@@ -221,7 +221,7 @@ test("common UI remains one story and folded notes, and Store gate is unchanged"
   assert.doesNotMatch(js,/\bfetch\s*\(/);
   const config=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",
     STORE_PUBLISHER:"CN=Publisher",STORE_PUBLISHER_DISPLAY_NAME:"Publisher"});
-  for(const file of ["six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v13.js"])
+  for(const file of ["six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v14.js"])
     assert.ok(config.files.includes(file));
   assert.ok(gate({},"win32").length>0);
 });

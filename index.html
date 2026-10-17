@@ -41,13 +41,14 @@
   <script defer src="./save-v13.js"></script>
   <script defer src="./save-v14.js"></script>
   <script defer src="./reading-v14.js"></script>
-  <script defer src="./game-v14.js"></script>
+  <script defer src="./journey-v16.js"></script>
+  <script defer src="./game-v16.js"></script>
 </head>
 <body>
   <div class="layout">
     <header class="topbar">
       <div class="brand"><span class="brand-mark" aria-hidden="true">／</span> 引継ぎ室 <span class="brand-en">HANDOVER ROOM</span></div>
-      <div class="meta"><span class="live-indicator" aria-hidden="true"></span> PRODUCT EXPERIENCE TEST <span class="meta-divider" aria-hidden="true">/</span> v0.10</div>
+      <div class="meta"><span class="live-indicator" aria-hidden="true"></span> 開発版 <span class="meta-divider" aria-hidden="true">/</span> v0.16</div>
     </header>
 
     <main class="main">
@@ -62,12 +63,13 @@
         <section class="story-panel" aria-labelledby="heading">
           <div class="scene-top">
             <span id="stage" class="scene-label">第一夜 / 調査開始</span>
-            <span class="scene-stamp">記録番号 : 01–A</span>
+            <button id="evidence-jump" class="evidence-jump" type="button" aria-controls="clues">手がかりを見る ↓</button>
           </div>
           <div class="progress-row" aria-label="調査の進行">
-            <span id="progress-text">1 / 9 場面</span>
-            <div class="meter"><div id="progress" class="meter-fill"></div></div>
+            <span id="progress-text">調査開始</span>
+            <div id="progress-track" class="meter" role="progressbar" aria-label="調査の進行" aria-valuemin="0" aria-valuemax="14" aria-valuenow="0"><div id="progress" class="meter-fill"></div></div>
           </div>
+          <p id="flow-caption" class="flow-caption">現在：第一夜の調査 → 次の聞き取り</p>
           <div class="scene-body">
             <p class="section-kicker">調査記録</p>
             <h1 id="heading" tabindex="-1">全員が同じことを言った</h1>
@@ -85,12 +87,13 @@
           <div class="evidence-heading">
             <div>
               <p class="section-kicker">NOTES / 手がかり</p>
-              <h2>あなたが見たもの</h2>
+              <h2 id="evidence-heading">あなたが見たもの</h2>
             </div>
             <span id="clue-count" class="clue-count">00</span>
           </div>
           <p class="evidence-description">記録は真実を保証しない。<br>誰の立場から見たものかを忘れないこと。</p>
           <div id="clues" class="clue-list"></div>
+          <button id="return-story" class="return-story" type="button">↑ 選択肢に戻る</button>
           <div class="evidence-foot">
             <div class="tiny-divider" aria-hidden="true"></div>
             <p>確定できることと、推測していること。その境界を自分で選んでください。</p>

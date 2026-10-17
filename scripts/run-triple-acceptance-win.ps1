@@ -97,8 +97,10 @@ try {
     if($RunWack){
       $kit=Join-Path ([Environment]::GetFolderPath("ProgramFilesX86")) "Windows Kits\10\App Certification Kit\appcert.exe"
       $pkgs=@(Get-ChildItem (Join-Path $root "dist-msix") -Filter "*.msix" -File -ErrorAction SilentlyContinue)
-      if(-not (Test-Path $kit)){Mark "WACK" "BLOCKED" "Windows App Certification Kit not found"}
-      elseif($pkgs.Count -ne 1){Mark "WACK" "BLOCKED" "Exactly one recent MSIX required for WACK"}
+      $msixPassed=@($results | Where-Object {$_.gate -eq "MSIX_BUILD" -and $_.status -eq "PASS"}).Count -eq 1
+      if(-not $msixPassed){Mark "WACK" "BLOCKED" "No successful MSIX build in this acceptance run; stale package forbidden"}
+      elseif(-not (Test-Path $kit)){Mark "WACK" "BLOCKED" "Windows App Certification Kit not found"}
+      elseif($pkgs.Count -ne 1){Mark "WACK" "BLOCKED" "Exactly one freshly built MSIX required for WACK"}
       else {
         # Microsoft's documented CLI; requires an interactive user session and, commonly, administrator rights.
         $report=Join-Path $output "WACK_report.xml"
@@ -121,6 +123,7 @@ try {
     "MSIX_BUILD","MSIX_MANIFEST")
   $passes=@($results | Where-Object {$_.status -eq "PASS"} | ForEach-Object {$_.gate})
   $complete=@($needed | Where-Object {$_ -notin $passes}).Count -eq 0
+  if($RunWack -and "WACK" -notin $passes){$complete=$false}
   $summary=[ordered]@{
     project="Handover Room"
     branch="feature/handover-v18-windows-acceptance-triple-gate"

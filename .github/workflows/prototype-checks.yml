@@ -5,6 +5,7 @@ on:
       - prototype/handover-room-20261017
       - feature/psychological-mystery-v02-product-quality
       - feature/psychological-mystery-v03-evidence-depth
+      - feature/handover-v04-deduction
   workflow_dispatch:
 
 permissions:

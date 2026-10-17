@@ -141,7 +141,7 @@ test("v13 mid-investigation saves retain their own hypothesis and revision scree
   assert.equal(continued.arcMode,"deliberative");
   assert.equal(save.validState(continued),true);
  }
- const game=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
+ const game=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");
  assert.match(game,/\["responsive","deliberative"\]\.includes\(state\.arcMode\)/);
 });
 test("new campaign cannot smuggle progress or extra fabricated evidence in JSON",()=>{
@@ -158,7 +158,7 @@ test("new campaign cannot smuggle progress or extra fabricated evidence in JSON"
 });
 test("single story panel, shorter theory prompts, no new UI tabs or checkout",()=>{
  const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
- const game=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
+ const game=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");
  const pack=save.blank(0),a=arcs.active(pack);
  let s=pack;
  for(const ch of ["listen",steps[a.id][0],steps[a.id][1],steps[a.id][2],"amend"])
@@ -178,7 +178,7 @@ test("single story panel, shorter theory prompts, no new UI tabs or checkout",()
  assert.ok(review.choices.every(x=>!x.hint));
  assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
  assert.equal((html.match(/<nav\b/g)||[]).length,0);
- assert.ok(html.includes('src="./game-v14.js"'));
+ assert.ok(html.includes('src="./game-v16.js"'));
  assert.ok(!html.includes('src="./game-v13.js"'));
  assert.ok(game.includes('if (option.hint && option.hint.trim())'));
  assert.doesNotMatch(game,/\bfetch\s*\(/);
@@ -186,6 +186,6 @@ test("single story panel, shorter theory prompts, no new UI tabs or checkout",()
  const cfg=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",
   STORE_PUBLISHER:"CN=Publisher",STORE_PUBLISHER_DISPLAY_NAME:"Publisher"});
  for(const p of ["midpoint-v14.js","arcs-v14.js","notes-v14.js","consequences-v14.js",
-  "save-v14.js","reading-v14.js","game-v14.js"])assert.ok(cfg.files.includes(p),p);
+  "save-v14.js","reading-v14.js","game-v16.js"])assert.ok(cfg.files.includes(p),p);
  assert.ok(gate({},"win32").length>0);
 });

@@ -14,10 +14,11 @@
     "audit:story-volume": "node scripts/story-volume-audit.cjs",
     "audit:msix": "node scripts/msix-preflight.cjs",
     "verify:msix:win": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/verify-msix.ps1",
-    "make:logos": "node scripts/make-brand-assets.cjs"
+    "make:logos": "node scripts/make-brand-assets.cjs",
+    "audit:store-release": "node scripts/store-release-audit.cjs"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12.0"
   },
   "main": "desktop/main.cjs",
   "devDependencies": {

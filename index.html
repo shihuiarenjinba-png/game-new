@@ -8,13 +8,15 @@
   <title>引継ぎ室 — 全員が同じことを言う夜</title>
   <link rel="stylesheet" href="./style.css">
   <script defer src="./story.js"></script>
-  <script defer src="./game.js"></script>
+  <script defer src="./morning.js"></script>
+  <script defer src="./save-guard.js"></script>
+  <script defer src="./game-v2.js"></script>
 </head>
 <body>
   <div class="layout">
     <header class="topbar">
       <div class="brand"><span class="brand-mark" aria-hidden="true">／</span> 引継ぎ室 <span class="brand-en">HANDOVER ROOM</span></div>
-      <div class="meta"><span class="live-indicator" aria-hidden="true"></span> PRIVATE PROTOTYPE <span class="meta-divider" aria-hidden="true">/</span> v0.1</div>
+      <div class="meta"><span class="live-indicator" aria-hidden="true"></span> PRODUCT EXPERIENCE TEST <span class="meta-divider" aria-hidden="true">/</span> v0.2</div>
     </header>
 
     <main class="main">
@@ -32,7 +34,7 @@
             <span class="scene-stamp">記録番号 : 01–A</span>
           </div>
           <div class="progress-row" aria-label="調査の進行">
-            <span id="progress-text">1 / 5 場面</span>
+            <span id="progress-text">1 / 9 場面</span>
             <div class="meter"><div id="progress" class="meter-fill"></div></div>
           </div>
           <div class="scene-body">
@@ -67,8 +69,19 @@
     </main>
 
     <footer class="footer">
-      <div>FICTION / このゲームの人物、工場、出来事はすべて架空です。<br>これは開発途中のデモであり販売品ではありません。</div>
-      <button id="reset" class="reset" type="button">最初からやり直す <span aria-hidden="true">↺</span></button>
+      <div>FICTION / 人物・工場・出来事は架空です。<br>第二章を含む開発版。販売品・完成品ではありません。</div>
+      <div class="footer-actions">
+        <details class="data-tools">
+          <summary>記録の管理</summary>
+          <div class="data-tools-inner">
+            <p id="storage-status">この端末にだけ保存します。外部への送信はありません。</p>
+            <button id="export-save" class="reset" type="button">記録をファイルに保存</button>
+            <button id="import-save" class="reset" type="button">保存ファイルを読み込む</button>
+            <input id="import-file" class="visually-hidden" type="file" accept=".json,application/json" aria-label="保存済みのJSONファイルを選択">
+          </div>
+        </details>
+        <button id="reset" class="reset" type="button">最初からやり直す <span aria-hidden="true">↺</span></button>
+      </div>
     </footer>
   </div>
 </body>

@@ -1,8 +1,8 @@
 {
   "name": "handover-room-prototype",
-  "version": "0.14.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Offline six-arc deduction game with evidence-bound consequences and simplified reading; commercial HOLD",
+  "description": "Handover Room v0.16 QA candidate: clear offline UI and gated Store MSIX; release HOLD",
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "test:product": "node --test tests/v2.test.cjs",
@@ -11,7 +11,9 @@
     "test:edge:win": "node scripts/windows-edge-smoke.cjs",
     "test:edge:accessibility:win": "node scripts/windows-edge-accessibility.cjs",
     "test:edge:save:win": "node scripts/windows-edge-save-transfer.cjs",
-    "audit:story-volume": "node scripts/story-volume-audit.cjs"
+    "audit:story-volume": "node scripts/story-volume-audit.cjs",
+    "audit:msix": "node scripts/msix-preflight.cjs",
+    "verify:msix:win": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/verify-msix.ps1"
   },
   "engines": {
     "node": ">=20"

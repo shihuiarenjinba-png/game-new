@@ -19,6 +19,7 @@ on:
       - feature/handover-v15-local-qa-recovery
       - feature/handover-v16-clear-ui-msix-readiness
       - feature/handover-v17-brand-store-audit
+      - feature/handover-v18-windows-acceptance-triple-gate
   workflow_dispatch:
 
 permissions:

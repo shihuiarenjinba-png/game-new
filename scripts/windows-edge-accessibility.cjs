@@ -132,7 +132,7 @@ async function run(x){
   if(!stateBefore.morning||stateBefore.morning.history.length!==1)
     throw Error("Unexpected state before reload");
   await cdp.call("Page.reload",{ignoreCache:true});
-  await until(async()=>await cdp.js('document.readyState==="complete" && JSON.parse(localStorage.getItem("handover-room-prototype-v13")).data.morning?.history.length===1 && !!document.querySelectorAll("#choices > button.option").length'),15000);
+  await until(async()=>await cdp.js('document.readyState==="complete" && JSON.parse(localStorage.getItem('+JSON.stringify(KEY)+')).data.morning?.history.length===1 && !!document.querySelectorAll("#choices > button.option").length'),15000);
   const saveAfter=await cdp.js('localStorage.getItem('+JSON.stringify(KEY)+')');
   if(saveAfter!==saveBefore)throw Error("Reload changed saved choice history or identity");
   for(let step=8;step<seq.length;step++){

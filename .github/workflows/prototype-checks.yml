@@ -14,6 +14,7 @@ on:
       - feature/handover-v10-reading-windows-smoke
       - feature/handover-v11-accessibility-save-qa
       - feature/handover-v12-save-transfer-replay-qa
+      - feature/handover-v13-hypothesis-revision
   workflow_dispatch:
 
 permissions:

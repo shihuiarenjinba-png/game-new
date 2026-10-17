@@ -200,8 +200,8 @@ test("52,488 seeded choice combinations preserve correct witness logic",()=>{
 
 test("no new navigation panes, remote API or invented charges",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const game=fs.readFileSync(path.join(__dirname,"..","game-v9.js"),"utf8");
-  for(const x of ["verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v7.js","save-v8.js","save-v9.js","game-v9.js"])
+  const game=fs.readFileSync(path.join(__dirname,"..","game-v10.js"),"utf8");
+  for(const x of ["verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","game-v10.js"])
     assert.ok(html.includes('src="./'+x+'"'));
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.equal((html.match(/<nav\b/g)||[]).length,0);

@@ -11,6 +11,7 @@ on:
       - feature/handover-v07-causal-audit
       - feature/handover-v08-six-arcs
       - feature/handover-v09-character-reactions
+      - feature/handover-v10-reading-windows-smoke
   workflow_dispatch:
 
 permissions:
@@ -27,3 +28,21 @@ jobs:
           node-version: '22'
       - name: Run narrative regression
         run: npm test
+
+  windows-edge:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify six routes in Windows Edge
+        run: node scripts/windows-edge-smoke.cjs
+      - name: Retain screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-edge-v10-screenshots
+          path: browser-smoke-output/*.png
+          if-no-files-found: ignore

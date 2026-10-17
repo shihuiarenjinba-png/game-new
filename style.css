@@ -138,3 +138,13 @@ h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(24px,2.4
 .deduction-back{border:0;background:transparent;color:var(--muted);font-size:12px;line-height:1.6;font-family:inherit;text-align:left;padding:11px 2px;margin-top:3px;cursor:pointer;align-self:flex-start}
 .deduction-back:hover{color:var(--highlight);text-decoration:underline}
 .deduction-back:focus-visible{outline:2px solid var(--highlight);outline-offset:3px}
+
+/* v0.10: reading density, not smaller text or more panels. */
+.started .narrative{line-height:1.9;min-height:0;max-width:65ch}
+.started .choice-section{margin-top:23px}
+.started .option{min-height:68px;padding-top:12px;padding-bottom:12px;gap:5px}
+.started .scene-body{padding-top:25px;padding-bottom:23px}
+.started .clue-list .clue>.clue-title{padding-top:12px;padding-bottom:12px}
+@media(min-width:801px){
+ .started .evidence-panel{align-self:start;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+}

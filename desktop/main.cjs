@@ -3,7 +3,7 @@
 const {app, BrowserWindow, Menu} = require("electron");
 const path = require("node:path");
 
-if (process.platform === "win32") app.setAppUserModelId("jp.handoverroom.prototype");
+// MSIX uses its manifest identity. Do not set a conflicting prototype AppUserModelId.
 
 function openMain() {
   const window = new BrowserWindow({

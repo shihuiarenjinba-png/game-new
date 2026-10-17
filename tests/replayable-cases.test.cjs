@@ -185,17 +185,17 @@ test("no procedural author names leak into introduction before evidence is colle
 
 test("the only UI is existing story and evidence panel, no new tabs",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const game=fs.readFileSync(path.join(__dirname,"..","game-v6.js"),"utf8");
+  const game=fs.readFileSync(path.join(__dirname,"..","game-v7.js"),"utf8");
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.equal((html.match(/<nav\b/g)||[]).length,0);
-  assert.ok(html.includes('src="./game-v6.js"'));
+  assert.ok(html.includes('src="./game-v7.js"'));
   assert.ok(!html.includes('src="./game-v4.js"'));
   assert.match(game,/別の事件を調査する/);
   assert.match(game,/同じ事件を最初から調べ直す/);
   assert.match(game,/grand\.nextSeed/);
   assert.doesNotMatch(game,/\bfetch\s*\(/);
   const config=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",STORE_PUBLISHER:"CN=Publisher",STORE_PUBLISHER_DISPLAY_NAME:"Publisher"});
-  for(const x of ["case-variants.js","case-notes-v5.js","major-arcs.js","case-notes-v6.js","save-v5.js","save-v6.js","game-v6.js"]) assert.ok(config.files.includes(x));
+  for(const x of ["case-variants.js","case-notes-v5.js","major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","save-v5.js","save-v6.js","save-v7.js","game-v7.js"]) assert.ok(config.files.includes(x));
   assert.equal(config.files.includes("game-v4.js"),false);
   assert.ok(gate({},"win32").length>0);
 });

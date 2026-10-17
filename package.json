@@ -13,7 +13,8 @@
     "test:edge:save:win": "node scripts/windows-edge-save-transfer.cjs",
     "audit:story-volume": "node scripts/story-volume-audit.cjs",
     "audit:msix": "node scripts/msix-preflight.cjs",
-    "verify:msix:win": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/verify-msix.ps1"
+    "verify:msix:win": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/verify-msix.ps1",
+    "make:logos": "node scripts/make-brand-assets.cjs"
   },
   "engines": {
     "node": ">=20"

@@ -6,8 +6,8 @@
 const fs=require("node:fs"),os=require("node:os"),path=require("node:path");
 const {spawn}=require("node:child_process");
 const root=path.join(__dirname,"..");
-const {blank,serialize,KEY}=require("../save-v13.js");
-const arcs=require("../deliberative-arcs-v13.js");
+const {blank,serialize,KEY}=require("../save-v14.js");
+const arcs=require("../arcs-v14.js");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 if(process.platform!=="win32"){process.stderr.write("Windows-only Edge QA\n");process.exit(2);}
 const paths=[
@@ -76,8 +76,8 @@ function fixture(seed){
  const begin=JSON.stringify(serialize(blank(seed)));
  const script='<script>if(!localStorage.getItem('+JSON.stringify(KEY)+'))'+
    'localStorage.setItem('+JSON.stringify(KEY)+','+begin+');</script>';
- return html.replace('<script defer src="./game-v13.js"></script>',
-   script+'\n<script defer src="./game-v13.js"></script>');
+ return html.replace('<script defer src="./game-v14.js"></script>',
+   script+'\n<script defer src="./game-v14.js"></script>');
 }
 async function run(x){
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),"handover-keyboard-"));

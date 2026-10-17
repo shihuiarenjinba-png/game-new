@@ -115,6 +115,35 @@ test("older v13 campaigns remain exactly the same under new rendering and save m
   assert.equal(save.restart(restored).arcMode,"deliberative");
  }
 });
+test("v13 mid-investigation saves retain their own hypothesis and revision screens",()=>{
+ for(const seed of [0,3,7,24,71]){
+  let s=former.blank(seed),r=steps[arcs.active(s).id];
+  for(const ch of ["listen",r[0],r[1],r[2],"amend"])
+   s={...s,night1:first.advance(s.night1,ch)};
+  const pending=save.migrateAny(former.serialize(s));
+  assert.equal(pending.arcMode,"deliberative");
+  assert.equal(pending.midpoint.initial,null);
+  assert.equal(mid.beginning(pending).choices.length,3);
+  assert.equal(save.validState(pending),true);
+  assert.deepEqual(pending,s);
+  s=mid.chooseInitial(pending,"hypothesis:system");
+  assert.equal(s.arcMode,"deliberative");
+  s={...s,morning:morning.fresh(s.night1)};
+  for(const ch of ["examine",r[3],r[4]]){
+   const m=morning.advance(s.morning,s.night1,ch);
+   s={...s,morning:m,deduction:m.scene==="report"?deduction.start():null};
+  }
+  assert.equal(s.midpoint.revision,null);
+  const restored=save.migrateAny(former.serialize(s));
+  assert.deepEqual(restored,s);
+  assert.equal(mid.second(restored).choices.length,3);
+  const continued=mid.chooseRevision(restored,"revision:revise");
+  assert.equal(continued.arcMode,"deliberative");
+  assert.equal(save.validState(continued),true);
+ }
+ const game=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
+ assert.match(game,/\["responsive","deliberative"\]\.includes\(state\.arcMode\)/);
+});
 test("new campaign cannot smuggle progress or extra fabricated evidence in JSON",()=>{
  for(const seed of [0,17,35,71]){
   const s=report(seed);

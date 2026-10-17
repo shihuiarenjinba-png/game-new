@@ -36,6 +36,8 @@ function gate(env, platform = process.platform) {
   if (env.STORE_PUBLISHER && !/^CN=.+/.test(env.STORE_PUBLISHER))
     issues.push("STORE_PUBLISHER は証明書に一致する CN=... 形式で設定してください");
   if (platform !== "win32") issues.push("MSIXのビルドはWindows実機上で実行してください");
+  if (env.STORE_BRAND_APPROVED !== "YES")
+    issues.push("STORE_BRAND_APPROVED=YES が未設定です（候補ロゴの内容確認が必要）");
   if (env.STORE_IDENTITY_CONFIRMED !== "YES")
     issues.push("STORE_IDENTITY_CONFIRMED=YES が未設定です（Partner Centerの正式Identity照合が必要）");
   if (!storeVersion(env.STORE_PACKAGE_VERSION))

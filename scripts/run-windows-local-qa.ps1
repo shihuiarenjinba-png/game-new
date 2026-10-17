@@ -32,7 +32,9 @@ function Run-Test([string]$name,[string]$scriptName) {
   $log = Join-Path $folder ($scriptName.Replace(":","-") + ".log")
   Push-Location $root
   try {
-    & npm.cmd run $scriptName *> $log
+    $priorPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try { & npm.cmd run $scriptName *> $log } finally { $ErrorActionPreference = $priorPreference }
     $code = $LASTEXITCODE
     if ($code -eq 0) {
       Add-Result $name "PASS" "exit code 0" $log
@@ -75,6 +77,13 @@ try {
     }
   }
 } finally {
+  $outcome = if ($failures -eq 0 -and -not $SkipEdge) {
+    "AUTOMATED_PASS"
+  } elseif ($failures -eq 0) {
+    "PARTIAL_NODE_ONLY"
+  } else {
+    "BLOCKED_OR_FAILED"
+  }
   $result = [ordered]@{
     project="Handover Room — game-new"
     version="v0.15 QA instructions based on v0.14 game"
@@ -86,7 +95,7 @@ try {
     edge_found=$hasEdge
     edge_suite_skipped=[bool]$SkipEdge
     commercial_status="HOLD: human playtest / MSIX / retail price unverified"
-    result=if($failures -eq 0 -and -not $SkipEdge){"AUTOMATED_PASS"}elseif($failures -eq 0){"PARTIAL_NODE_ONLY"}else{"BLOCKED_OR_FAILED"}
+    result=$outcome
     checks=@($checks.ToArray())
   }
   $json=Join-Path $folder "qa-summary.json"

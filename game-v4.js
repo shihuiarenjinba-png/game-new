@@ -135,6 +135,24 @@
       choices.append(button);
     }
 
+    if (inMorning && state.morning.scene === "report" && state.deduction?.stage !== "focus") {
+      const back = element("button", "deduction-back", "← 推理を一段戻す");
+      back.type = "button";
+      back.addEventListener("click", () => {
+        try {
+          const next = { ...state, deduction: deduction.rewind(state.deduction, state) };
+          if (!guard.validState(next)) throw new Error("戻る操作で保存形式が不正になりました");
+          state = next;
+          write(state);
+          draw();
+          revealStory();
+        } catch (_err) {
+          notice.textContent = "推理の見直しに失敗しました。元の進行は保護されています。";
+        }
+      });
+      choices.append(back);
+    }
+
     if (isFirstEnd()) {
       const nextButton = element("button", "option continue");
       nextButton.type = "button";

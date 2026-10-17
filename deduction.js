@@ -3,9 +3,9 @@
  * 外部サービス、AI、乱数、個人データ送信なし。
  */
 (function(root, factory) {
-  const notes = typeof module !== "undefined" && module.exports ? require("./case-notes-v6.js") : root.HandoverCaseNotesV6;
+  const notes = typeof module !== "undefined" && module.exports ? require("./case-notes-v7.js") : root.HandoverCaseNotesV7;
   const arcs = typeof module !== "undefined" && module.exports
-    ? require("./major-arcs.js") : root.HandoverGrandArcs;
+    ? require("./verified-arcs.js") : root.HandoverVerifiedArcs;
   const api = factory(notes,arcs);
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.HandoverDeduction = api;
@@ -45,7 +45,10 @@
   }
   function score(focus, pair, state) {
     const arc=arcs.active(state);
-    if (arc && arc.focus===focus && pair.includes("arc-primary") &&
+    if (arc && arc.focus===focus && state.arcMode==="verified" &&
+        pair.includes("arc-support") && pair.includes("arc-counter"))return 2;
+    if (arc && arc.focus===focus && state.arcMode==="major" &&
+        pair.includes("arc-primary") &&
         (pair.includes("arc-support") || pair.includes("arc-counter")))return 2;
     const related = FOCI[focus].needed;
     if (related.some(group => group.every(id => pair.includes(id)))) return 2;
@@ -63,7 +66,8 @@
       }
     }
     if (pairs.length<3) throw new Error("証拠が不足しています");
-    const strong = pairs.find(x => x.score===2 && x.items.includes("arc-proof")) ||
+    const strong = pairs.find(x => x.score===2 && x.items.includes("arc-support") && x.items.includes("arc-counter")) ||
+      pairs.find(x => x.score===2 && x.items.includes("arc-proof")) ||
       pairs.find(x => x.score===2 && x.items.includes("arc-counter")) ||
       pairs.find(x => x.score===2 && x.items.includes("case-witness")) ||
       pairs.find(x => x.score===2 && x.items.includes("case-side")) ||

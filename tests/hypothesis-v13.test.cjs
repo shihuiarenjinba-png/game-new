@@ -82,6 +82,18 @@ test("72 seeds × 3 hypotheses × 3 reassessments always reach evidence-grounded
  }
  assert.equal(checked,648);
 });
+test("the first provisional guess creates three distinct later conversation reactions in all six routes",()=>{
+ for(let seed=0;seed<72;seed++){
+  const lines=[];
+  for(const initial of mid.INITIAL){
+   const s=report(seed,initial,"revise");
+   const inConversation={...s,morning:{...s.morning,scene:"maho"}};
+   lines.push(mid.reflection(inConversation));
+  }
+  assert.equal(new Set(lines).size,3,"case "+seed);
+  lines.forEach(x=>assert.ok(x.length>35));
+ }
+});
 test("hypothesis cannot itself become proof; choosing a weak pair leaves the big mystery unresolved",()=>{
  for(let seed=0;seed<72;seed++){
   for(const initial of mid.INITIAL)for(const revision of mid.REVISION){

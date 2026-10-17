@@ -99,8 +99,8 @@ test("all 243 first night routes and 81 second chapter routes remain valid", () 
 
 test("one main game area and hidden backup tools; no payment screens or network", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-  const js = fs.readFileSync(path.join(__dirname, "..", "game-v9.js"), "utf8");
-  assert.match(html, /src="\.\/game-v9\.js"/);
+  const js = fs.readFileSync(path.join(__dirname, "..", "game-v10.js"), "utf8");
+  assert.match(html, /src="\.\/game-v10\.js"/);
   assert.match(html, /src="\.\/morning\.js"/);
   assert.match(html, /src="\.\/save-guard\.js"/);
   assert.match(html, /<details class="data-tools">/);

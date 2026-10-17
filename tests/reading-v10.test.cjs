@@ -98,10 +98,10 @@ test("intro and questions retain the original game decision meaning",()=>{
 });
 test("active browser script and compact CSS add no new navigation or screen",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const js=fs.readFileSync(path.join(__dirname,"..","game-v10.js"),"utf8");
+  const js=fs.readFileSync(path.join(__dirname,"..","game-v13.js"),"utf8");
   const style=fs.readFileSync(path.join(__dirname,"..","style.css"),"utf8");
   assert.ok(html.includes('src="./reading-v10.js"'));
-  assert.ok(html.includes('src="./game-v10.js"'));
+  assert.ok(html.includes('src="./game-v13.js"'));
   assert.ok(!html.includes('src="./game-v9.js"'));
   assert.ok(js.includes("reading.compose"));
   assert.ok(style.includes(".started .narrative"));

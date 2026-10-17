@@ -13,7 +13,7 @@
   const night=s.night1.history.length,days=m?m.history.length:0;
   const theory=hasMid&&s.midpoint.initial!==null;
   const revision=hasMid&&s.midpoint.revision!==null;
-  const d=m?.scene==="report"?s.deduction:null;
+  const d=(m?.scene==="report"||m?.scene==="epilogue")?s.deduction:null;
   const inference=d?({focus:0,pair:1,reading:2,complete:3}[d.stage]??0):0;
   const max=hasMid?14:12,now=Math.min(max,night+days+Number(theory)+Number(revision)+inference);
   let current,next;

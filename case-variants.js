@@ -153,6 +153,11 @@
         "紙には気になる特徴があった。しかし今ある記録だけで筆者を決めることはできない。";
     }
     if(m.scene==="sahara"){
+      const earlyProof=n.clues.includes(p.author.trigger) &&
+        has(m.history,"letter","examine") &&
+        p.author.route.maho && has(m.history,"maho",p.author.route.maho);
+      if(earlyProof) return "【ここまでの証言】 "+p.author.witness+
+        (has(m.history,"maho","why")?"\n"+p.incident.answer:"");
       if(has(m.history,"maho","why"))return p.incident.answer;
       return "休憩室で見た小さな出来事の意味は、まだ誰にも尋ねられていない。";
     }
@@ -162,10 +167,27 @@
         "匿名の書き置きが誰のものか、確かな証言は得られていない。記録に残るのはまだ手掛かりだけだ。";
     }
     if(m.scene==="epilogue"){
+      const reportChoice=m.history[3];
+      const infer=state.deduction?.stage==="complete"?state.deduction.reading:null;
+      const consequence=reportChoice==="accuse"
+        ? "班長を名指しした報告が現場に伝わり、翌日の朝礼では誰も自分の言葉で話さなくなった。"
+        : reportChoice==="protect"
+          ? "あなたは名前を伏せて聞き取りを続けた。真帆の勤務は守られたが、正式な訂正には時間がかかった。"
+          : "報告書には確認した事実と未確認の理由を分けて記した。誰かを一度で納得させることはできなかった。";
+      const inference=infer==="assert"
+        ? "ただし、推理で断定した部分を巡り、後から異議が出された。"
+        : infer==="dismiss"
+          ? "推理で切り捨てた疑問は、翌日の申し送りにも残らなかった。"
+          : infer==="balanced"
+            ? "書けない部分を残したことで、次の調査員には確かめるべき問いが伝わった。"
+            : "推理の詳しい記録は残されなかった。";
       if(isRevealed(c,state))return "【今回の事件で確かめられたこと】\n"+p.author.reveal+
-        "\n【その人が隠したかったこと】\n"+p.motive.why+"\n【別の小さな出来事】\n"+p.incident.answer;
+        "\n【その人が隠したかったこと】\n"+p.motive.why+
+        "\n【別の小さな出来事】\n"+p.incident.answer+
+        "\n【あなたの判断が残したこと】\n"+consequence+" "+inference;
       return "【今回の事件で残った問い】\n封筒の筆者は特定できなかった。ただ、"+p.motive.clue+
-        "\n"+p.incident.caution+" 周回を変えて、別の記録から探れるかもしれない。";
+        "\n"+p.incident.caution+
+        "\n【あなたの判断が残したこと】\n"+consequence+" "+inference;
     }
     return "";
   }

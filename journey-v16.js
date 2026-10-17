@@ -15,7 +15,9 @@
   const revision=hasMid&&s.midpoint.revision!==null;
   const d=(m?.scene==="report"||m?.scene==="epilogue")?s.deduction:null;
   const inference=d?({focus:0,pair:1,reading:2,complete:3}[d.stage]??0):0;
-  const max=hasMid?14:12,now=Math.min(max,night+days+Number(theory)+Number(revision)+inference);
+  const finishedWithoutOldInference=m?.scene==="epilogue"&&!s.deduction;
+  const max=hasMid?14:(finishedWithoutOldInference?9:12);
+  const now=Math.min(max,night+days+Number(theory)+Number(revision)+inference);
   let current,next;
   if(!m){
    if(night===5&&!theory&&hasMid){current="仮説を立てる";next="翌朝の聞き取り";}

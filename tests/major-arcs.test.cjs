@@ -128,17 +128,17 @@ test("round rotation alternates major arcs without repeats across 72 runs",()=>{
 });
 test("no extra UI panel, navigational tabs or game checkout",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const code=fs.readFileSync(path.join(__dirname,"..","game-v6.js"),"utf8");
+  const code=fs.readFileSync(path.join(__dirname,"..","game-v7.js"),"utf8");
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.equal((html.match(/<nav\b/g)||[]).length,0);
-  for(const file of ["major-arcs.js","case-notes-v6.js","save-v6.js","game-v6.js"])
+  for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","save-v6.js","save-v7.js","game-v7.js"])
     assert.ok(html.includes('src="./'+file+'"'));
   assert.match(code,/arcs?\.|grand\.sceneText/);
   assert.match(code,/grand\.nextSeed/);
   assert.doesNotMatch(code,/\bfetch\s*\(/);
   assert.doesNotMatch(html,/stripe|paypal|checkout/i);
   const cfg=makeConfig({STORE_IDENTITY_NAME:"Publisher.HandoverRoom",STORE_PUBLISHER:"CN=Publisher",STORE_PUBLISHER_DISPLAY_NAME:"Publisher"});
-  for(const file of ["major-arcs.js","case-notes-v6.js","save-v6.js","game-v6.js"])
+  for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","save-v6.js","save-v7.js","game-v7.js"])
     assert.ok(cfg.files.includes(file));
   assert.equal(cfg.files.includes("game-v5.js"),false);
   assert.ok(gate({},"win32").length>0);

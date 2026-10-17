@@ -27,11 +27,24 @@
       unresolved:"雇用への不安は聞けたが、停止回数と更新条件の正式な関係や、誰から噂が広まったかは確かめられなかった。"
     }
   });
+  // Factor-balanced allocation: each main arc receives all author types,
+  // motives, side incidents and ambience types; avoid seed-range correlations.
+  function arcIndex(seed){
+    if(!Number.isInteger(seed)||seed<0||seed>=cases.COUNT)throw Error("不正な事件番号");
+    const author=seed%4,motive=Math.floor(seed/4)%3,
+      incident=Math.floor(seed/12)%3, ambience=Math.floor(seed/36)%2;
+    return (author+motive+incident+ambience)%ARCS.length;
+  }
+  const buckets=ARCS.map(()=>[]);
+  for(let seed=0;seed<cases.COUNT;seed++)buckets[arcIndex(seed)].push(seed);
+  if(buckets.some(x=>x.length!==24))throw Error("大型事件の割当が不均等です");
+  const ORDER=Object.freeze(Array.from({length:24},(_,i)=>
+    buckets.map(b=>b[(i*5)%24])).flat());
   function valid(s){return !!s && s.case && cases.valid(s.case) && s.night1 && Array.isArray(s.night1.clues) &&
     (s.morning===null || (s.morning && Array.isArray(s.morning.history)));}
   function active(s){
     if(!valid(s))return null;
-    if(s.arcMode==="verified" && s.case.mode==="procedural")return ARCS[Math.floor(s.case.seed/24)];
+    if(s.arcMode==="verified" && s.case.mode==="procedural")return ARCS[arcIndex(s.case.seed)];
     if(s.arcMode==="major")return old.active(s);
     return null;
   }
@@ -104,6 +117,9 @@
     }
     return "";
   }
-  function nextSeed(seed){return old.nextSeed(seed);}
-  return Object.freeze({VERSION,ARCS,VERIFIED_ENDINGS,active,status,verified,observed,sceneText,nextSeed});
+  function nextSeed(seed){
+    if(!Number.isInteger(seed)||seed<0||seed>=cases.COUNT)throw Error("不正な事件番号");
+    return ORDER[(ORDER.indexOf(seed)+1)%ORDER.length];
+  }
+  return Object.freeze({VERSION,ARCS,VERIFIED_ENDINGS,arcIndex,active,status,verified,observed,sceneText,nextSeed});
 });

@@ -13,6 +13,7 @@ on:
       - feature/handover-v09-character-reactions
       - feature/handover-v10-reading-windows-smoke
       - feature/handover-v11-accessibility-save-qa
+      - feature/handover-v12-save-transfer-replay-qa
   workflow_dispatch:
 
 permissions:
@@ -42,3 +43,5 @@ jobs:
         run: node scripts/windows-edge-smoke.cjs
       - name: Verify native keyboard and reload under display scaling
         run: node scripts/windows-edge-accessibility.cjs
+      - name: Verify exported and imported local backup round-trip
+        run: node scripts/windows-edge-save-transfer.cjs

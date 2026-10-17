@@ -1,8 +1,8 @@
 {
   "name": "handover-room-prototype",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Two-chapter offline psychological mystery prototype, private commercial evaluation",
+  "description": "Evidence-grounded offline psychological mystery prototype; commercial HOLD",
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "test:product": "node --test tests/v2.test.cjs",

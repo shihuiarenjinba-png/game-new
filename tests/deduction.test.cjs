@@ -115,6 +115,18 @@ test("resume during each inference step without losing selected facts",()=>{
   }
 });
 
+test("one-step rewind is valid and lets players revise evidence without starting over",()=>{
+  const base=reportState();
+  const focus=deduction.advance(base.deduction,base,"focus:records");
+  const pair=deduction.advance(focus,base,"pair:"+deduction.options(base,"records")[0].id);
+  const complete=deduction.advance(pair,base,"reading:assert");
+  assert.deepEqual(deduction.rewind(focus,base),deduction.start());
+  assert.deepEqual(deduction.rewind(pair,base),focus);
+  assert.deepEqual(deduction.rewind(complete,base),pair);
+  assert.equal(guard.validState({...base,deduction:deduction.rewind(complete,base)}),true);
+  assert.equal(guard.validState({...base,deduction:deduction.rewind(pair,base)}),true);
+});
+
 test("v0.2/v0.3 backup migrates without touching old data; v0.1 stays compatible",()=>{
   const s=reportState();
   const oldData={night1:s.night1,morning:s.morning};

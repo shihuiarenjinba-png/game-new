@@ -3,9 +3,9 @@
  * 外部サービス、AI、乱数、個人データ送信なし。
  */
 (function(root, factory) {
-  const notes = typeof module !== "undefined" && module.exports ? require("./notes-v13.js") : root.HandoverNotesV13;
+  const notes = typeof module !== "undefined" && module.exports ? require("./notes-v14.js") : root.HandoverNotesV14;
   const arcs = typeof module !== "undefined" && module.exports
-    ? require("./deliberative-arcs-v13.js") : root.HandoverDeliberativeArcs;
+    ? require("./arcs-v14.js") : root.HandoverArcsV14;
   const api = factory(notes,arcs);
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.HandoverDeduction = api;
@@ -45,7 +45,7 @@
   }
   function score(focus, pair, state) {
     const arc=arcs.active(state);
-    if (arc && arc.focus===focus && ["verified","expanded","immersive","deliberative"].includes(state.arcMode) &&
+    if (arc && arc.focus===focus && ["verified","expanded","immersive","deliberative","responsive"].includes(state.arcMode) &&
         pair.includes("arc-support") && pair.includes("arc-counter"))return 2;
     if (arc && arc.focus===focus && state.arcMode==="major" &&
         pair.includes("arc-primary") &&

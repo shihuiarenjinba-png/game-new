@@ -10,6 +10,14 @@
   function join(parts){
     return parts.filter(x=>typeof x==="string"&&x.trim()).map(x=>x.trim()).join("\n\n");
   }
+  function oneClimaxHeading(text){
+    if(typeof text!=="string")return text;
+    const lines=text.split("\n");
+    if(lines.length>1 && /^【大きな回収[^】]*】$/.test(lines[0]) &&
+      /^【大きな回収[^】]*】$/.test(lines[1]))
+      return lines.slice(1).join("\n");
+    return text;
+  }
   function compose(state,screen,pieces){
     if(state.arcMode!=="immersive")return null;
     const m=state.morning,n=state.night1;
@@ -24,7 +32,7 @@
       const recovered=pieces.verified;
       const reflection=pieces.review?"【推理の記録】 "+pieces.review.status+
         "\n"+pieces.review.detail:"";
-      return join([recovered?"":screen.body,pieces.major,pieces.beat,reflection,
+      return join([recovered?"":screen.body,oneClimaxHeading(pieces.major),pieces.beat,reflection,
         pieces.case]);
     }
     if(!m){

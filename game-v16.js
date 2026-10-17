@@ -372,7 +372,7 @@
 
   evidenceJump.addEventListener("click", () => {
     evidencePanel.scrollIntoView({ block: "start", behavior: "auto" });
-    returnStory.focus({ preventScroll: true });
+    $("evidence-heading").focus({ preventScroll: true });
   });
   returnStory.addEventListener("click", () => {
     const firstChoice = choices.querySelector("button.option");

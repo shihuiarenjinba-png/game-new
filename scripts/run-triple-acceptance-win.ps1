@@ -136,6 +136,9 @@ try {
         }else{Mark "WACK" "FAIL" "WACK CLI failed"}
       }
     }else{Mark "WACK" "NOT_RUN" "Run manually in interactive Windows session or opt in with -RunWack"}
+    Mark "MSIX_INSTALL" "MANUAL_REQUIRED" "Separate signed-package inspection and explicit user consent required"
+    Mark "MSIX_UPDATE" "MANUAL_REQUIRED" "Update-version and save-preservation trial not yet performed"
+    Mark "MSIX_UNINSTALL" "MANUAL_REQUIRED" "No automatic removal; user-controlled acceptance only"
   }else{
     foreach($name in @("NODE_FULL_REGRESSION","STORY_VOLUME","EDGE_GUI","MSIX_BUILD","MSIX_MANIFEST","WACK")){
       Mark $name "BLOCKED" "Windows / Node prerequisites not met"
@@ -158,7 +161,7 @@ try {
     finished_at=(Get-Date).ToString("o")
     os=[Environment]::OSVersion.VersionString
     node=$nodeVersion
-    overall=if($complete){"AUTOMATED_GATES_PASS_STORE_HOLD"}else{"INCOMPLETE_OR_FAILED"}
+    overall=if($complete){"AUTOMATED_PREINSTALL_GATES_PASS_INSTALL_PENDING"}else{"INCOMPLETE_OR_FAILED"}
     store_release="HOLD"
     important="WACK, human MSIX install/start/update/uninstall, real human playtest and Store certification are independent acceptance gates."
     gates=@($results.ToArray())

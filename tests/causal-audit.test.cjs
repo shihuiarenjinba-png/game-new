@@ -160,6 +160,44 @@ test("new stage still forbids unearned evidence and tampered inference saves",()
   assert.equal(save7.validState(forgedSeed),false);
   assert.throws(()=>save7.parse("{bad"));
 });
+test("52,488 seeded choice combinations preserve correct witness logic",()=>{
+  const records=["wording","stoppage","renewals"],coworkers=["private","repeat","space"],
+    supervisors=["author","targets","agreement"],letters=["preserve","share","examine"],
+    mahos=["private","why","name"],subjects=["ask","quote","sign"];
+  let count=0,complete=0;
+  for(let seed=0;seed<72;seed++){
+    const a=arcs.active(save7.blank(seed));
+    for(const record of records)for(const coworker of coworkers)for(const supervisor of supervisors){
+      const n=night(["formal",record,coworker,supervisor,"amend"]);
+      for(const letter of letters)for(const maho of mahos)for(const sahara of subjects){
+        const m=day(n,[letter,maho,sahara]);
+        const state={night1:n,morning:m,case:cases.create(seed),
+          deduction:puzzle.start(),arcMode:"verified"};
+        const st=arcs.status(state),facts=arcs.observed(state);
+        const source=record===a.entry;
+        const support=source&&(a.id==="two-moments"?coworker==="private":
+          a.id==="silent-rule"?supervisor==="targets":supervisor==="author");
+        const counter=source&&(a.id==="two-moments"?sahara==="ask":maho==="why");
+        assert.equal(st.source,source);
+        assert.equal(st.support,support);
+        assert.equal(st.counter,counter);
+        assert.equal(st.full,source&&support&&counter);
+        assert.equal(facts.some(x=>x.id==="arc-primary"),source);
+        assert.equal(facts.some(x=>x.id==="arc-support"),support);
+        assert.equal(facts.some(x=>x.id==="arc-counter"),counter);
+        assert.equal(facts.some(x=>x.id==="arc-proof"),false);
+        assert.equal(arcs.verified(state),false);
+        assert.doesNotMatch(arcs.sceneText(state),/【大きな回収|署名前の記入例/);
+        if(st.full)complete++;
+        count++;
+      }
+    }
+  }
+  assert.equal(count,52488);
+  assert.ok(complete>0);
+  assert.ok(complete<count);
+});
+
 test("no new navigation panes, remote API or invented charges",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
   const game=fs.readFileSync(path.join(__dirname,"..","game-v7.js"),"utf8");

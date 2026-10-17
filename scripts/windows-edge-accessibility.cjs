@@ -76,8 +76,8 @@ function fixture(seed){
  const begin=JSON.stringify(serialize(blank(seed)));
  const script='<script>if(!localStorage.getItem('+JSON.stringify(KEY)+'))'+
    'localStorage.setItem('+JSON.stringify(KEY)+','+begin+');</script>';
- return html.replace('<script defer src="./game-v14.js"></script>',
-   script+'\n<script defer src="./game-v14.js"></script>');
+ return html.replace('<script defer src="./game-v16.js"></script>',
+   script+'\n<script defer src="./game-v16.js"></script>');
 }
 async function run(x){
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),"handover-keyboard-"));

@@ -3,10 +3,10 @@
  * Both hypothesis checkpoints counted; quoted shared text is NOT new content.
  */
 const story=require("../story.js"),morning=require("../morning.js");
-const cases=require("../case-variants.js"),arcs=require("../deliberative-arcs-v13.js");
-const beats=require("../scene-beats.js"),reader=require("../reading-v13.js");
-const notes=require("../notes-v13.js"),deduction=require("../deduction.js");
-const mid=require("../deliberation-v13.js"),save=require("../save-v13.js");
+const cases=require("../case-variants.js"),arcs=require("../arcs-v14.js");
+const beats=require("../scene-beats.js"),reader=require("../reading-v14.js");
+const notes=require("../notes-v14.js"),deduction=require("../deduction.js");
+const mid=require("../midpoint-v14.js"),save=require("../save-v14.js");
 const routes={
  prefilled:["wording","space","author","why","ask"],
  "two-moments":["stoppage","private","author","private","ask"],

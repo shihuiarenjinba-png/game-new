@@ -4,6 +4,7 @@ on:
     branches:
       - prototype/handover-room-20261017
       - feature/psychological-mystery-v02-product-quality
+      - feature/psychological-mystery-v03-evidence-depth
   workflow_dispatch:
 
 permissions:

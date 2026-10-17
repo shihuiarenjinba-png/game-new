@@ -104,9 +104,36 @@ try {
       else {
         # Microsoft's documented CLI; requires an interactive user session and, commonly, administrator rights.
         $report=Join-Path $output "WACK_report.xml"
-        [void](Invoke-Log "WACK_RESET" $kit @("reset"))
-        [void](Invoke-Log "WACK" $kit @("test","-appxpackagepath",$pkgs[0].FullName,
-          "-reportoutputpath",$report))
+        if(-not (Invoke-Log "WACK_RESET" $kit @("reset"))){
+          Mark "WACK" "BLOCKED" "WACK reset failed"
+        }elseif(Invoke-Log "WACK_COMMAND" $kit @("test","-appxpackagepath",$pkgs[0].FullName,
+          "-reportoutputpath",$report)){
+          if(-not (Test-Path $report)){
+            Mark "WACK" "FAIL" "WACK returned zero but XML report is missing"
+          }else{
+            try{
+              [xml]$xml=Get-Content -Path $report -Raw
+              $reportNode=$xml.SelectSingleNode("/*[local-name()='REPORT']")
+              if($null -eq $reportNode){throw "REPORT XML root missing"}
+              $status=$reportNode.GetAttribute("OVERALL_RESULT")
+              $partial=$reportNode.GetAttribute("PARTIAL_RUN")
+              $appName=$reportNode.GetAttribute("APP_NAME")
+              $appVersion=$reportNode.GetAttribute("APP_VERSION")
+              if($status -ne "PASS" -or $partial -eq "TRUE"){
+                throw "WACK report overall=$status partial=$partial"
+              }
+              if($appName -and $appName -cne $env:STORE_IDENTITY_NAME){
+                throw "WACK app identity differs from Partner Center"
+              }
+              if($appVersion -and $appVersion -ne $env:STORE_PACKAGE_VERSION){
+                throw "WACK app version differs from submitted package"
+              }
+              Mark "WACK" "PASS" "XML overall=PASS, no partial run, verified app/version where present" $report
+            }catch{
+              Mark "WACK" "FAIL" $_.Exception.Message $report
+            }
+          }
+        }else{Mark "WACK" "FAIL" "WACK CLI failed"}
       }
     }else{Mark "WACK" "NOT_RUN" "Run manually in interactive Windows session or opt in with -RunWack"}
   }else{

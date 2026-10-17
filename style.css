@@ -200,3 +200,15 @@ h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(24px,2.4
   .evidence-jump{font-size:11px;padding:7px 9px}
   .option{min-height:60px}
 }
+
+/* Commercial first-play UX: optional, not another permanent navigation tab. */
+.first-play-guide{grid-column:1/-1;margin:21px 0 0;border:1px solid var(--line);padding:0 16px;background:#20292a;max-width:690px}
+.first-play-guide>summary{cursor:pointer;list-style-position:inside;color:var(--highlight);font-weight:650;padding:14px 0;line-height:1.6}
+.first-play-guide>summary:focus-visible{outline:2px solid var(--highlight);outline-offset:4px}
+.first-play-guide>summary span{margin-left:5px}
+.first-play-guide>p,.first-play-guide>ol{margin:9px 0 15px;color:var(--type);font-size:13px;line-height:1.9}
+.first-play-guide>ol{padding-left:27px}
+.first-play-guide li{margin:5px 0}
+.first-play-guide .first-play-foot{color:var(--muted);font-size:12px}
+.started .first-play-guide{display:none}
+@media(max-width:800px){.first-play-guide{max-width:none;margin-top:22px}}

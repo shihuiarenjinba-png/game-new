@@ -156,8 +156,8 @@ test("completed v0.2 saves preserve their outcome without forced new gameplay",(
 
 test("the markup presents deduction in the same existing choice panel, no new tabs",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
-  const game=fs.readFileSync(path.join(__dirname,"..","game-v13.js"),"utf8");
-  const paths=["story.js","morning.js","save-guard.js","case-notes.js","case-variants.js","case-notes-v5.js","major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","deduction.js","save-v4.js","save-v5.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","reading-v13.js","save-v13.js","game-v13.js"];
+  const game=fs.readFileSync(path.join(__dirname,"..","game-v14.js"),"utf8");
+  const paths=["story.js","morning.js","save-guard.js","case-notes.js","case-variants.js","case-notes-v5.js","major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","midpoint-v14.js","arcs-v14.js","notes-v14.js","deduction.js","consequences-v14.js","save-v4.js","save-v5.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","reading-v13.js","save-v13.js","save-v14.js","reading-v14.js","game-v14.js"];
   let last=-1;
   for(const p of paths) {
     const at=html.indexOf('src="./'+p+'"');

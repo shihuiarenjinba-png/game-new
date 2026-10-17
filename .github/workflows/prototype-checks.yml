@@ -30,6 +30,8 @@ jobs:
           node-version: '22'
       - name: Run narrative regression
         run: npm test
+      - name: Report objective six-route text volume
+        run: npm run audit:story-volume
 
   windows-edge:
     runs-on: windows-latest

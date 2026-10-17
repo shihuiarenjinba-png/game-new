@@ -60,8 +60,8 @@ function fixtureFor(seed){
     'if(!document.querySelector("#choices").textContent.includes("別の事件"))throw Error("missing replay");'+
     'document.body.dataset.smokeResult="SMOKE_PASS_'+seed+'";'+
   '}catch(e){document.body.dataset.smokeResult="SMOKE_FAIL_"+String(e.message||e);}});</script>';
-  const replaced=html.replace('<script defer src="./game-v14.js"></script>',
-    injected+'\n  <script defer src="./game-v14.js"></script>');
+  const replaced=html.replace('<script defer src="./game-v16.js"></script>',
+    injected+'\n  <script defer src="./game-v16.js"></script>');
   if(replaced===html)throw Error("Active game script not found in fixture");
   return replaced.replace("</body>",driver+"\n</body>");
 }

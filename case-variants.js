@@ -97,7 +97,11 @@
   function create(seed){const c={version:VERSION,mode:"procedural",seed};if(!valid(c))throw Error("事件番号が不正です");return c;}
   function legacy(){return {version:VERSION,mode:"legacy",seed:null};}
   function nextSeed(seed){if(!Number.isInteger(seed)||seed<0||seed>=COUNT)throw Error("番号が不正です");return (seed+1)%COUNT;}
-  function has(history,scene,choice){return history.some(x=>x.scene===scene&&x.choice===choice);}
+  function has(history,scene,choice){
+    // Morning chapter stores a compact ordered array of choice IDs.
+    const i=["letter","maho","sahara","report"].indexOf(scene);
+    return i>=0 && Array.isArray(history) && history[i]===choice;
+  }
   function isRevealed(c,state){
     const p=profile(c);if(!p||!state.morning)return false;
     const n=state.night1, m=state.morning;

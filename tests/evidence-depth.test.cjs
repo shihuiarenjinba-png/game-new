@@ -48,7 +48,7 @@ test("two different sources with similar labels stay separate", () => {
 
 test("morning feedback changes with exposed vs preserved envelope", () => {
   const n=playNight(["listen","stoppage","private","author","amend"]);
-  const exposed={night1:n,morning:morning.advance(morning.fresh(n), "share"===null?n:n, "share")};
+  const exposed={night1:n,morning:morning.advance(morning.fresh(n), n, "share")};
   const protectedState={night1:n,morning:morning.advance(morning.fresh(n),n,"preserve")};
   assert.match(notes.emphasis(exposed), /封筒を見せた/);
   assert.match(notes.emphasis(protectedState), /申し送り/);

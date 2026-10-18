@@ -32,3 +32,15 @@ test("standalone Electron shell denies external navigation, windows and permissi
   assert.match(s, /contextIsolation:\s*true/);
   assert.match(s, /sandbox:\s*true/);
 });
+
+test("Partner Center's EKIDEN identity cannot pass Handover Room MSIX gate",()=>{
+ const record=require("../store/partner-center-identity.json");
+ const env={STORE_IDENTITY_NAME:record.identityName,STORE_PUBLISHER:record.publisher,
+  STORE_PUBLISHER_DISPLAY_NAME:record.publisherDisplayName,STORE_ID:record.storeId,
+  STORE_IDENTITY_CONFIRMED:"YES",STORE_BRAND_APPROVED:"YES",STORE_PACKAGE_VERSION:"1.0.0.0"};
+ const correct=gate(env,"win32");
+ assert.ok(!correct.some(x=>/別作品のIdentity/.test(x)));
+ const wrong=gate({...env,STORE_IDENTITY_NAME:"OkinawaDesktopTools.EKIDENMANAGER",STORE_ID:"9NL1HLJRFQ39"},"win32");
+ assert.ok(wrong.some(x=>/STORE_IDENTITY_NAME/.test(x)&&/一致しません/.test(x)));
+ assert.ok(wrong.some(x=>/STORE_ID/.test(x)&&/別作品/.test(x)));
+});

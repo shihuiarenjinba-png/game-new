@@ -43,6 +43,7 @@
   <script defer src="./reading-v14.js"></script>
   <script defer src="./journey-v16.js"></script>
   <script defer src="./game-v16.js"></script>
+  <script defer src="./handover-tabs.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -69,7 +70,11 @@
         </details>
       </section>
 
-      <div class="content-grid">
+      <nav id="handoverNav" class="handover-nav" role="tablist" aria-label="物語の画面切替">
+<button type="button" role="tab" data-handover-view="story" aria-controls="heading">📖 物語と選択肢</button>
+<button type="button" role="tab" data-handover-view="clues" aria-controls="clues">🗂 集めた手がかり</button>
+</nav>
+<div class="content-grid">
         <section class="story-panel" aria-labelledby="heading">
           <div class="scene-top">
             <span id="stage" class="scene-label">第一夜 / 調査開始</span>

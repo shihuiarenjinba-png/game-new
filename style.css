@@ -212,3 +212,12 @@ h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(24px,2.4
 .first-play-guide .first-play-foot{color:var(--muted);font-size:12px}
 .started .first-play-guide{display:none}
 @media(max-width:800px){.first-play-guide{max-width:none;margin-top:22px}}
+
+
+.handover-nav{display:flex;gap:10px;margin:12px 0 16px;flex-wrap:wrap}
+.handover-nav button{min-height:44px;padding:10px 17px;border:1px solid #88948f;border-radius:9px;background:#2b3a3e;color:#efe9d5;font-weight:700}
+.handover-nav button[aria-selected="true"]{background:#d5c3a0;color:#263133;border-color:#e8d8b9}
+.handover-nav button:focus-visible{outline:3px solid #ecd39e;outline-offset:3px}
+.content-grid[data-handover-view="clues"]{display:block;max-width:880px;margin-inline:auto}
+.content-grid[data-handover-view="clues"] .evidence-panel{width:100%;max-width:none}
+.story-panel[hidden]{display:none!important}

@@ -3,6 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
+const {issues: identityIssues} = require("./store-identity.cjs");
 const {spawnSync} = require("node:child_process");
 const root = path.join(__dirname, "..");
 
@@ -24,7 +25,7 @@ function pngDimensions(file) {
   return [b.readUInt32BE(16),b.readUInt32BE(20)];
 }
 function gate(env, platform = process.platform) {
-  const issues = [];
+  const issues = [...identityIssues(env)];
   const fields = ["STORE_IDENTITY_NAME", "STORE_PUBLISHER", "STORE_PUBLISHER_DISPLAY_NAME"];
   for (const field of fields) {
     if (!env[field] || !env[field].trim()) issues.push(field + " が未設定です");

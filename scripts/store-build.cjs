@@ -52,7 +52,7 @@ function gate(env, platform = process.platform) {
   }
   if (/^CN=ms$/i.test(env.STORE_PUBLISHER||""))
     issues.push("STORE_PUBLISHER に仮のCN=msは使用できません。Partner Centerの正式発行者を指定してください");
-  const required = ["index.html", "style.css", "journey-v16.js", "game-v16.js", "scripts/verify-msix.ps1", "story.js", "morning.js",
+  const required = ["index.html", "style.css", "journey-v16.js", "game-v16.js", "handover-tabs.js", "scripts/verify-msix.ps1", "story.js", "morning.js",
     "save-guard.js", "case-notes.js", "case-variants.js", "case-notes-v5.js", "major-arcs.js", "case-notes-v6.js", "verified-arcs.js", "case-notes-v7.js", "six-arcs.js", "case-notes-v8.js", "immersive-arcs.js", "scene-beats.js", "case-notes-v9.js", "deduction.js", "save-v4.js", "save-v5.js", "save-v6.js", "save-v7.js", "save-v8.js", "save-v9.js", "reading-v10.js", "deliberation-v13.js", "deliberative-arcs-v13.js", "notes-v13.js", "reading-v13.js", "save-v13.js", "game-v13.js", "midpoint-v14.js", "arcs-v14.js", "notes-v14.js", "consequences-v14.js", "save-v14.js", "reading-v14.js", "game-v14.js", "desktop/main.cjs"];
   for (const name of required)
     if (!fs.existsSync(path.join(root, name))) issues.push("不足ファイル: " + name);
@@ -76,7 +76,7 @@ function makeConfig(env) {
     productName: "引継ぎ室",
     buildVersion: env.STORE_PACKAGE_VERSION,
     asar: true,
-    files: ["index.html", "style.css", "story.js", "morning.js", "save-guard.js", "case-notes.js", "case-variants.js", "case-notes-v5.js", "major-arcs.js", "case-notes-v6.js", "verified-arcs.js", "case-notes-v7.js", "six-arcs.js", "case-notes-v8.js", "immersive-arcs.js", "scene-beats.js", "case-notes-v9.js", "deduction.js", "save-v4.js", "save-v5.js", "save-v6.js", "save-v7.js", "save-v8.js", "save-v9.js", "reading-v10.js", "deliberation-v13.js", "deliberative-arcs-v13.js", "notes-v13.js", "reading-v13.js", "save-v13.js", "game-v13.js", "midpoint-v14.js", "arcs-v14.js", "notes-v14.js", "consequences-v14.js", "save-v14.js", "reading-v14.js", "game-v14.js", "journey-v16.js", "game-v16.js", "desktop/main.cjs", "package.json"],
+    files: ["index.html", "style.css", "story.js", "morning.js", "save-guard.js", "case-notes.js", "case-variants.js", "case-notes-v5.js", "major-arcs.js", "case-notes-v6.js", "verified-arcs.js", "case-notes-v7.js", "six-arcs.js", "case-notes-v8.js", "immersive-arcs.js", "scene-beats.js", "case-notes-v9.js", "deduction.js", "save-v4.js", "save-v5.js", "save-v6.js", "save-v7.js", "save-v8.js", "save-v9.js", "reading-v10.js", "deliberation-v13.js", "deliberative-arcs-v13.js", "notes-v13.js", "reading-v13.js", "save-v13.js", "game-v13.js", "midpoint-v14.js", "arcs-v14.js", "notes-v14.js", "consequences-v14.js", "save-v14.js", "reading-v14.js", "game-v14.js", "journey-v16.js", "game-v16.js", "handover-tabs.js", "desktop/main.cjs", "package.json"],
     directories: {output: "dist-msix", buildResources: "build"},
     toolsets: {winCodeSign: "1.1.0"},
     win: {target: [{target:"msix", arch:["x64"]}]},

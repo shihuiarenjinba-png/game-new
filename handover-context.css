@@ -1,0 +1,16 @@
+
+/* Original story remains readable. No fabricated character, factory witness or clue art. */
+.story-panel{background:linear-gradient(148deg,#2e302f 0%,#1b2527 34%,#181d21 100%)}
+.story-panel .scene-top{background:linear-gradient(100deg,#283033,#191e23)}
+.story-panel .scene-body{background:radial-gradient(ellipse at 90% 6%,#5a4b3444,transparent 47%)}
+.story-panel .narrative{color:#e5e3d9;max-width:68ch;overflow-wrap:anywhere}
+.story-panel .choice-section{border-top:1px solid #7e74654a;padding-top:16px}
+.evidence-panel{background:linear-gradient(150deg,#373630,#242c2e 55%,#1a2428);
+ border-color:#8b806c}
+.evidence-panel .clue-list{overflow-wrap:anywhere}
+.content-grid[data-handover-view="clues"] .evidence-panel{max-height:none!important;position:static!important;
+ min-height:60vh;background:linear-gradient(155deg,#383830,#202a2d)}
+.content-grid[data-handover-view="story"] .story-panel{min-width:0}
+.handover-nav button[aria-selected="true"]{border-color:#efd8aa}
+@media(max-width:850px){.story-panel .narrative{max-width:100%}.evidence-panel{min-width:0}}
+@media(prefers-reduced-motion:reduce){.story-panel,.evidence-panel{transition:none!important}}

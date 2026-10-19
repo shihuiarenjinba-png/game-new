@@ -8,7 +8,7 @@
   function choose(target){
    if(target!=="story"&&target!=="clues")return false;
    active=target;
-   story.hidden=target==="clues";clues.hidden=false;
+   story.hidden=target==="clues";clues.hidden=target==="story";
    grid.dataset.handoverView=target;
    for(const btn of nav.querySelectorAll("[data-handover-view]")){
     const selected=btn.dataset.handoverView===target;

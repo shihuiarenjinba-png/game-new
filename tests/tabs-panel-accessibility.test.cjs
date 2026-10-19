@@ -8,6 +8,11 @@ test("tabs reference real story and evidence panels and story remains unmodified
   assert.match(html,new RegExp('id="'+id+'"'));
  }
  assert.match(tabs,/story\.hidden=target==="clues"/);
+ assert.match(tabs,/clues\.hidden=target==="story"/);
+ assert.match(html,/id="evidence-jump"[^>]+aria-controls="evidencePanel"/);
+ const styles=fs.readFileSync("handover-context.css","utf8");
+ assert.match(styles,/\.evidence-panel\[hidden\]\{display:none!important\}/);
+ assert.match(styles,/\.content-grid\[data-handover-view="story"\]\{display:block/);
  assert.match(tabs,/grid\.dataset\.handoverView=target/);
  assert.doesNotMatch(tabs,/localStorage|\.warmth\s*=|\.clues\s*=/);
 });

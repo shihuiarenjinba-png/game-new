@@ -14,3 +14,8 @@
 .handover-nav button[aria-selected="true"]{border-color:#efd8aa}
 @media(max-width:850px){.story-panel .narrative{max-width:100%}.evidence-panel{min-width:0}}
 @media(prefers-reduced-motion:reduce){.story-panel,.evidence-panel{transition:none!important}}
+
+/* Keep narrative as the main focus; clue documents open only on their selected tab. */
+.content-grid[data-handover-view="story"]{display:block;max-width:1080px;margin-inline:auto}
+.evidence-panel[hidden]{display:none!important}
+.content-grid[data-handover-view="story"] .story-panel{width:100%}

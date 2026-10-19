@@ -71,11 +71,11 @@
       </section>
 
       <nav id="handoverNav" class="handover-nav" role="tablist" aria-label="物語の画面切替">
-<button type="button" role="tab" data-handover-view="story" aria-controls="heading">📖 物語と選択肢</button>
-<button type="button" role="tab" data-handover-view="clues" aria-controls="clues">🗂 集めた手がかり</button>
+<button type="button" role="tab" data-handover-view="story" aria-controls="storyPanel">📖 物語と選択肢</button>
+<button type="button" role="tab" data-handover-view="clues" aria-controls="evidencePanel">🗂 集めた手がかり</button>
 </nav>
 <div class="content-grid">
-        <section class="story-panel" aria-labelledby="heading">
+        <section class="story-panel" id="storyPanel" aria-labelledby="heading">
           <div class="scene-top">
             <span id="stage" class="scene-label">第一夜 / 調査開始</span>
             <button id="evidence-jump" class="evidence-jump" type="button" aria-controls="clues">手がかりを見る ↓</button>
@@ -98,7 +98,7 @@
           </div>
         </section>
 
-        <aside class="evidence-panel" aria-label="調査した記録">
+        <aside class="evidence-panel" id="evidencePanel" aria-label="調査した記録">
           <div class="evidence-heading">
             <div>
               <p class="section-kicker">NOTES / 手がかり</p>

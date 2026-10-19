@@ -20,6 +20,7 @@ on:
       - feature/handover-v16-clear-ui-msix-readiness
       - feature/handover-v17-brand-store-audit
       - feature/handover-v18-windows-acceptance-triple-gate
+      - qa/handover-story-ui-ci-20261019
   workflow_dispatch:
 
 permissions:

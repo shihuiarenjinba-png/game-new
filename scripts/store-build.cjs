@@ -108,7 +108,14 @@ function run() {
     return;
   }
   const generated = path.join(root,"electron-builder.store.generated.json");
-  fs.writeFileSync(generated, JSON.stringify(makeConfig(process.env), null, 2) + "\n", {flag:"w"});
+  const outputFolder = path.join(root,"dist-msix");
+  // A Store build must never overwrite a previous output or generated configuration.
+  if (fs.existsSync(generated) || (fs.existsSync(outputFolder) && fs.readdirSync(outputFolder).length)) {
+    process.stderr.write("前回のMSIX候補または設定が既にあります。既存成果物を保存し、空の隔離作業フォルダで実行してください。\\n");
+    process.exitCode=2;
+    return;
+  }
+  fs.writeFileSync(generated, JSON.stringify(makeConfig(process.env), null, 2) + "\n", {flag:"wx"});
   const buildStartedAt=Date.now();
   const child = spawnSync(process.execPath, [builder, "--win", "msix", "--x64", "--config", generated, "--publish", "never"],
     {cwd:root,stdio:"inherit",shell:false});

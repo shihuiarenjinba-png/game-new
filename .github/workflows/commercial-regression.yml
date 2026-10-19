@@ -1,7 +1,7 @@
 name: Handover Room commercial regression
 on:
   push:
-    branches: ["feature/commercial-first-play-ux-20261018"]
+    branches: ["feature/commercial-first-play-ux-20261018", "feature/pre-codex-handoff-gates-20261019"]
   workflow_dispatch:
 jobs:
   regression:

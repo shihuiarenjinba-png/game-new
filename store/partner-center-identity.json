@@ -1,13 +1,26 @@
 {
   "schema": 1,
   "productTitle": "引継ぎ室",
+  "repository": "shihuiarenjinba-png/game-new",
   "storeId": "9NDJG4P8RW5F",
   "identityName": "OkinawaDesktopTools.20270FC9B0B9E",
   "publisher": "CN=46263F21-A700-41DB-8C9B-114C22FB82FC",
   "publisherDisplayName": "Okinawa Desktop Tools",
   "packageFamilyName": "OkinawaDesktopTools.20270FC9B0B9E_j8yefg9jgfh58",
-  "partnerCenterStatus": "In draft",
-  "verificationSource": "Owner-provided Partner Center View product identity screenshot, 2026-10-18",
+  "packageSid": "S-1-15-2-4018733278-3700711716-1688467548-3185597447-1230453349-979115714-353864028",
+  "partnerCenterStatus": "In draft (last recorded 2026-10-18; current state not rechecked)",
+  "partnerCenterStatusVerifiedAt": "2026-10-18",
+  "storeDeepLink": null,
+  "webStoreUrl": null,
+  "storeLinksNote": "Available after the product is live",
+  "storeListingLanguages": "UNCONFIRMED",
+  "applicationLanguages": "UNCONFIRMED",
+  "formalStoreMsix": {
+    "status": "UNCONFIRMED_PATH_OR_CONTENT",
+    "path": null,
+    "sha256": null
+  },
+  "verificationSource": "Owner-provided Partner Center product identity details in chat, 2026-10-22; prior recorded status dated 2026-10-18",
   "storeSubmission": "HOLD",
-  "notes": "Product created but not submitted; Store product data is not a signing certificate or a passed WACK."
+  "notes": "Identity values are recorded as identifier tokens without trailing whitespace. The pasted values used the HTML entity &#x20; suffix; compare the actual Partner Center values with AppxManifest before packaging. Product identity does not mean the MSIX is validated or submitted."
 }

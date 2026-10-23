@@ -26,6 +26,7 @@ function pngDimensions(file) {
 }
 function gate(env, platform = process.platform) {
   const issues = [...identityIssues(env)];
+  const candidateBuild = env.STORE_BUILD_MODE === "CANDIDATE";
   const fields = ["STORE_IDENTITY_NAME", "STORE_PUBLISHER", "STORE_PUBLISHER_DISPLAY_NAME"];
   for (const field of fields) {
     if (!env[field] || !env[field].trim()) issues.push(field + " が未設定です");
@@ -37,10 +38,14 @@ function gate(env, platform = process.platform) {
   if (env.STORE_PUBLISHER && !/^CN=.+/.test(env.STORE_PUBLISHER))
     issues.push("STORE_PUBLISHER は証明書に一致する CN=... 形式で設定してください");
   if (platform !== "win32") issues.push("MSIXのビルドはWindows実機上で実行してください");
-  if (env.STORE_BRAND_APPROVED !== "YES")
-    issues.push("STORE_BRAND_APPROVED=YES が未設定です（候補ロゴの内容確認が必要）");
-  if (env.STORE_IDENTITY_CONFIRMED !== "YES")
-    issues.push("STORE_IDENTITY_CONFIRMED=YES が未設定です（Partner Centerの正式Identity照合が必要）");
+  // Candidate builds may package generated artwork for local review, but this is not brand approval.
+  if (env.STORE_BRAND_APPROVED !== "YES" && !candidateBuild)
+    issues.push("STORE_BRAND_APPROVED=YES が未設定です（正式Storeビルド前にロゴ承認が必要）");
+  // OWNER_APPROVED means the owner approved the recorded values for this internal candidate only;
+  // it does not claim that the live Partner Center page was re-checked.
+  if (env.STORE_IDENTITY_CONFIRMED !== "YES" &&
+      !(candidateBuild && env.STORE_IDENTITY_CONFIRMED === "OWNER_APPROVED"))
+    issues.push("STORE_IDENTITY_CONFIRMED=YES が未設定です（正式Store提出前にPartner CenterのIdentity照合が必要）");
   if (!storeVersion(env.STORE_PACKAGE_VERSION))
     issues.push("STORE_PACKAGE_VERSION は1.0.0.0形式（先頭1以上・末尾0）で設定してください");
   else {
@@ -146,13 +151,17 @@ function run() {
     if(size<1024)errors.push("パッケージが小さすぎます: "+name);
     return {name,size,sha256:hash};
   });
+  const candidateBuild=process.env.STORE_BUILD_MODE==="CANDIDATE";
   const report={
     generatedAt:new Date().toISOString(),identity:process.env.STORE_IDENTITY_NAME,
-    publisher:process.env.STORE_PUBLISHER,packageVersion:process.env.STORE_PACKAGE_VERSION,
-    packages:details,result:errors.length?"HOLD":"BUILT_NOT_CERTIFIED",
-    cautions:["Partner Centerの正式Identityとの一致確認が必要",
+    publisher:process.env.STORE_PUBLISHER,storeId:process.env.STORE_ID||null,
+    publisherDisplayName:process.env.STORE_PUBLISHER_DISPLAY_NAME,
+    packageVersion:process.env.STORE_PACKAGE_VERSION,buildMode:candidateBuild?"CANDIDATE":"STANDARD",
+    packages:details,result:errors.length?"HOLD":(candidateBuild?"CANDIDATE_BUILT_NOT_CERTIFIED":"BUILT_NOT_CERTIFIED"),
+    cautions:["Partner Centerの現在の正式Identityとの一致はライブ確認していません",
       "MSIX内のマニフェストを確認しWACKおよびインストール・更新テストが必要",
-      "Store提出・署名・公開は行っていません"]
+      "Store提出・署名・公開は行っていません",
+      ...(candidateBuild?["候補ロゴは正式承認前。ローカル担当の表示・ブランド確認後に正式ビルド判断が必要"]:[])]
   };
   fs.writeFileSync(path.join(folder,"MSIX_BUILD_AUDIT.json"),JSON.stringify(report,null,2)+"\n");
   if(errors.length) {

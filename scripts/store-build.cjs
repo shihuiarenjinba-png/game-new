@@ -46,6 +46,9 @@ function gate(env, platform = process.platform) {
   if (env.STORE_IDENTITY_CONFIRMED !== "YES" &&
       !(candidateBuild && env.STORE_IDENTITY_CONFIRMED === "OWNER_APPROVED"))
     issues.push("STORE_IDENTITY_CONFIRMED=YES が未設定です（正式Store提出前にPartner CenterのIdentity照合が必要）");
+  const sourceCommit=(env.SOURCE_GIT_COMMIT||env.GITHUB_SHA||"").trim();
+  if(!/^[0-9a-f]{40}$/i.test(sourceCommit))
+    issues.push("SOURCE_GIT_COMMIT または GITHUB_SHA に40桁のSource commitが必要です");
   if (!storeVersion(env.STORE_PACKAGE_VERSION))
     issues.push("STORE_PACKAGE_VERSION は1.0.0.0形式（先頭1以上・末尾0）で設定してください");
   else {
@@ -82,6 +85,7 @@ function makeConfig(env) {
     buildVersion: env.STORE_PACKAGE_VERSION,
     asar: true,
     files: ["index.html", "style.css", "handover-context.css", "story.js", "morning.js", "save-guard.js", "case-notes.js", "case-variants.js", "case-notes-v5.js", "major-arcs.js", "case-notes-v6.js", "verified-arcs.js", "case-notes-v7.js", "six-arcs.js", "case-notes-v8.js", "immersive-arcs.js", "scene-beats.js", "case-notes-v9.js", "deduction.js", "save-v4.js", "save-v5.js", "save-v6.js", "save-v7.js", "save-v8.js", "save-v9.js", "reading-v10.js", "deliberation-v13.js", "deliberative-arcs-v13.js", "notes-v13.js", "reading-v13.js", "save-v13.js", "game-v13.js", "midpoint-v14.js", "arcs-v14.js", "notes-v14.js", "consequences-v14.js", "save-v14.js", "reading-v14.js", "game-v14.js", "journey-v16.js", "game-v16.js", "handover-tabs.js", "desktop/main.cjs", "package.json"],
+    extraResources: [{from:"build/store-build-meta/SOURCE_GIT_COMMIT.txt",to:"SOURCE_GIT_COMMIT.txt"}],
     directories: {output: "dist-msix", buildResources: "build"},
     toolsets: {winCodeSign: "1.1.0"},
     win: {target: [{target:"msix", arch:["x64"]}]},
@@ -90,7 +94,7 @@ function makeConfig(env) {
       identityName: env.STORE_IDENTITY_NAME,
       publisher: env.STORE_PUBLISHER,
       publisherDisplayName: env.STORE_PUBLISHER_DISPLAY_NAME,
-      displayName: "引継ぎ室",
+      displayName: env.STORE_DISPLAY_NAME,
       languages: ["ja-JP"],
       createMsixupload: true,
       setBuildNumber: false,
@@ -113,6 +117,16 @@ function run() {
     return;
   }
   const generated = path.join(root,"electron-builder.store.generated.json");
+  const sourceCommit=(process.env.SOURCE_GIT_COMMIT||process.env.GITHUB_SHA||"").trim();
+  const metaDir=path.join(root,"build","store-build-meta");
+  const commitFile=path.join(metaDir,"SOURCE_GIT_COMMIT.txt");
+  fs.mkdirSync(metaDir,{recursive:true});
+  if(fs.existsSync(commitFile)&&fs.readFileSync(commitFile,"utf8").trim()!==sourceCommit){
+    process.stderr.write("既存SOURCE_GIT_COMMIT.txtが現在のSource commitと不一致です。上書きせず停止します。\n");
+    process.exitCode=2;
+    return;
+  }
+  fs.writeFileSync(commitFile,sourceCommit+"\n","utf8");
   fs.writeFileSync(generated, JSON.stringify(makeConfig(process.env), null, 2) + "\n", {flag:"w"});
   const buildStartedAt=Date.now();
   const child = spawnSync(process.execPath, [builder, "--win", "msix", "--x64", "--config", generated, "--publish", "never"],
@@ -158,7 +172,9 @@ function run() {
     publisherDisplayName:process.env.STORE_PUBLISHER_DISPLAY_NAME,
     packageVersion:process.env.STORE_PACKAGE_VERSION,buildMode:candidateBuild?"CANDIDATE":"STANDARD",
     sourceRepository:process.env.GITHUB_REPOSITORY||"shihuiarenjinba-png/game-new",
-    sourceBranch:process.env.GITHUB_REF_NAME||null,sourceCommit:process.env.GITHUB_SHA||null,
+    sourceBranch:process.env.GITHUB_REF_NAME||null,
+    sourceCommit:(process.env.SOURCE_GIT_COMMIT||process.env.GITHUB_SHA||null),
+    storeDisplayName:process.env.STORE_DISPLAY_NAME||null,
     workflowRunId:process.env.GITHUB_RUN_ID||null,
     packages:details,result:errors.length?"HOLD":(candidateBuild?"CANDIDATE_BUILT_NOT_CERTIFIED":"BUILT_NOT_CERTIFIED"),
     cautions:["Partner Centerの現在の正式Identityとの一致はライブ確認していません",

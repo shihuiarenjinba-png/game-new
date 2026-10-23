@@ -1,0 +1,59 @@
+name: Handover Room MSIX candidate
+on:
+  push:
+    branches:
+      - ops/msix-candidate-build-20261023
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate-build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact source revision
+        uses: actions/checkout@v4
+
+      - name: Set up supported Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+
+      - name: Install dependencies without creating an unreviewed lockfile
+        run: npm install --no-package-lock
+
+      - name: Run source and packaging regression tests
+        run: npm test
+
+      - name: Run story-volume audit
+        run: npm run audit:story-volume
+
+      - name: Generate review-only Store icon candidates
+        run: npm run make:logos
+
+      - name: Build and verify unsigned Store candidate MSIX
+        run: npm run build:msix
+        env:
+          STORE_BUILD_MODE: CANDIDATE
+          STORE_ID: 9NDJG4P8RW5F
+          STORE_IDENTITY_NAME: OkinawaDesktopTools.20270FC9B0B9E
+          STORE_PUBLISHER: CN=46263F21-A700-41DB-8C9B-114C22FB82FC
+          STORE_PUBLISHER_DISPLAY_NAME: Okinawa Desktop Tools
+          STORE_DISPLAY_NAME: 引継ぎ室
+          SOURCE_GIT_COMMIT: ${{ github.sha }}
+          STORE_IDENTITY_CONFIRMED: OWNER_APPROVED
+          STORE_PACKAGE_VERSION: 1.0.0.0
+
+      - name: Upload candidate bundle for local acceptance
+        if: ${{ always() && hashFiles('dist-msix/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: handover-room-msix-candidate-${{ github.run_number }}
+          path: |
+            dist-msix/*.msix
+            dist-msix/*.msixupload
+            dist-msix/MSIX_BUILD_AUDIT.json
+          if-no-files-found: error
+          retention-days: 14

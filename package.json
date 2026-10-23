@@ -2,7 +2,7 @@
   "name": "handover-room-prototype",
   "version": "1.0.0",
   "private": true,
-  "description": "Handover Room v0.16 QA candidate: clear offline UI and gated Store MSIX; release HOLD",
+  "description": "Offline psychological mystery game about evidence, testimony, inference, and careful reporting with local save data.",
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "test:product": "node --test tests/v2.test.cjs",

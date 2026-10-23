@@ -22,5 +22,7 @@
   },
   "verificationSource": "Owner-provided Partner Center product identity details in chat, 2026-10-22; prior recorded status dated 2026-10-18",
   "storeSubmission": "HOLD",
-  "notes": "Identity values are recorded as identifier tokens without trailing whitespace. The pasted values used the HTML entity &#x20; suffix; compare the actual Partner Center values with AppxManifest before packaging. Product identity does not mean the MSIX is validated or submitted."
+  "notes": "Identity values are recorded as identifier tokens without trailing whitespace. The pasted values used the HTML entity &#x20; suffix; compare the actual Partner Center values with AppxManifest before packaging. Product identity does not mean the MSIX is validated or submitted.",
+  "storeDisplayName": "引継ぎ室",
+  "storeDisplayNameSource": "Owner-provided Partner Center product page screenshot, 2026-10-24"
 }

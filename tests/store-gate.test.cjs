@@ -23,6 +23,22 @@ test("proper MSIX config is Japan-only language, Windows MSIX-only, no backgroun
   assert.ok(!conf.files.some(f => /market|strategy|economics/i.test(f)));
 });
 
+test("candidate build can package owner-approved recorded identity without claiming live verification or brand approval",()=>{
+ const record=require("../store/partner-center-identity.json");
+ const env={STORE_ID:record.storeId,STORE_IDENTITY_NAME:record.identityName,
+  STORE_PUBLISHER:record.publisher,STORE_PUBLISHER_DISPLAY_NAME:record.publisherDisplayName,
+  STORE_IDENTITY_CONFIRMED:"OWNER_APPROVED",STORE_BUILD_MODE:"CANDIDATE",
+  STORE_PACKAGE_VERSION:"1.0.0.0"};
+ const issues=gate(env,"win32");
+ assert.ok(!issues.some(x=>/STORE_BRAND_APPROVED/.test(x)));
+ assert.ok(!issues.some(x=>/STORE_IDENTITY_CONFIRMED/.test(x)));
+ assert.ok(!issues.some(x=>/STORE_IDENTITY_NAME.*一致しません/.test(x)));
+ assert.ok(!issues.some(x=>/STORE_ID.*別作品/.test(x)));
+ const standard=gate({...env,STORE_BUILD_MODE:undefined},"win32");
+ assert.ok(standard.some(x=>/STORE_BRAND_APPROVED/.test(x)));
+ assert.ok(standard.some(x=>/STORE_IDENTITY_CONFIRMED/.test(x)));
+});
+
 test("standalone Electron shell denies external navigation, windows and permissions", () => {
   const s = fs.readFileSync(path.join(__dirname, "..", "desktop", "main.cjs"), "utf8");
   assert.match(s, /setWindowOpenHandler/);

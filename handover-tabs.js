@@ -5,6 +5,14 @@
    clues=document.querySelector(".evidence-panel"),grid=document.querySelector(".content-grid");
   if(!nav||!story||!clues||!grid)return;
   let active="story";
+  for(const [name,panel] of [["story",story],["clues",clues]]){
+   const button=nav.querySelector('[data-handover-view="'+name+'"]');
+   if(!button)return;
+   if(!button.id)button.id="handover-tab-"+name;
+   panel.setAttribute("role","tabpanel");
+   panel.setAttribute("aria-labelledby",button.id);
+   button.setAttribute("aria-controls",panel.id);
+  }
   function choose(target){
    if(target!=="story"&&target!=="clues")return false;
    active=target;
@@ -21,9 +29,9 @@
    if(button)choose(button.dataset.handoverView);
   });
   nav.addEventListener("keydown",event=>{
-   if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
+   if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"].includes(event.key))return;
    event.preventDefault();
-   const to=event.key==="Home"||event.key==="ArrowLeft"?"story":"clues";
+   const to=event.key==="Home"||event.key==="ArrowLeft"||event.key==="ArrowUp"?"story":"clues";
    choose(to);nav.querySelector('[data-handover-view="'+to+'"]')?.focus();
   });
   document.getElementById("evidence-jump")?.addEventListener("click",()=>choose("clues"));

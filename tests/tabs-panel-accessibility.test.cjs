@@ -14,5 +14,9 @@ test("tabs reference real story and evidence panels and story remains unmodified
  assert.match(styles,/\.evidence-panel\[hidden\]\{display:none!important\}/);
  assert.match(styles,/\.content-grid\[data-handover-view="story"\]\{display:block/);
  assert.match(tabs,/grid\.dataset\.handoverView=target/);
+ assert.match(tabs,/setAttribute\("role","tabpanel"\)/);
+ assert.match(tabs,/setAttribute\("aria-labelledby",button\.id\)/);
+ assert.match(tabs,/ArrowUp/);
+ assert.match(tabs,/ArrowDown/);
  assert.doesNotMatch(tabs,/localStorage|\.warmth\s*=|\.clues\s*=/);
 });

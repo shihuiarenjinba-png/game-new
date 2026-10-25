@@ -51,6 +51,23 @@ const output=path.resolve("unified-ui-evidence");fs.mkdirSync(output,{recursive:
   }
   observed.clickedTab=count>=2;
   observed.checkedAllTabs=verifiedTabs===count;
+
+  // Actual mystery choice + save continuity, separate from simple tab switching.
+  await p.locator('[data-handover-view="story"]').click();
+  const saveKey="handover-room-prototype-v14";
+  const progressBefore=Number(await p.locator("#progress-track").getAttribute("aria-valuenow"));
+  const choices=p.locator("#choices > button.option");
+  assert.ok(await choices.count()>=3,"the opening scene must present meaningful choices");
+  await choices.first().click();
+  const progressAfter=Number(await p.locator("#progress-track").getAttribute("aria-valuenow"));
+  assert.ok(progressAfter>progressBefore,"a narrative decision must advance the story");
+  assert.doesNotMatch(await p.locator("#notice").innerText(),/進行に問題が起きました/);
+  const afterChoice=await p.evaluate(k=>localStorage.getItem(k),saveKey);
+  assert.ok(afterChoice && afterChoice.length>20,"the chosen action must be saved");
+  await p.reload({waitUntil:"load"});
+  assert.equal(await p.evaluate(k=>localStorage.getItem(k),saveKey),afterChoice,
+    "story choice must survive a fresh page load");
+  assert.equal(Number(await p.locator("#progress-track").getAttribute("aria-valuenow")),progressAfter);
   const mobile=await browser.newContext({viewport:{width:1024,height:768}}),q=await mobile.newPage();
   listen(q);await q.goto(url.pathToFileURL(path.resolve("index.html")).href,{waitUntil:"load"});
   const metrics=await q.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth}));

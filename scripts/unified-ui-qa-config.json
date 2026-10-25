@@ -1,5 +1,7 @@
 {
   "product": "引継ぎ室",
   "entranceSelector": null,
-  "devCopyHold": false
+  "devCopyHold": false,
+  "expectedTabs": 2,
+  "panelSelector": ".story-panel,.evidence-panel"
 }

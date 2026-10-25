@@ -44,6 +44,9 @@
   let state = guard.blank(randomSeed());
   let saveStatus = "";
   let lastFinding = null;
+  // Keep unreadable active saves byte-for-byte until the player explicitly
+  // replaces them with a validated import or confirms a fresh start.
+  let recoveryRaw = null;
 
   try {
     const current=localStorage.getItem(guard.KEY);
@@ -60,10 +63,15 @@
       }
     }
   } catch (_err) {
+    try { recoveryRaw = localStorage.getItem(guard.KEY); } catch (_) {}
     saveStatus="以前の保存記録を検証できませんでした。元のデータは変更していません。";
   }
 
   function write(value) {
+    if (recoveryRaw !== null) {
+      saveStatus = "元のセーブを保護中です。書き出すか、正常なセーブを読み込んでください。";
+      return false;
+    }
     const text = guard.serialize(value);
     try {
       localStorage.setItem(guard.KEY, text);
@@ -310,11 +318,34 @@
       ? "事実と推測を分けて、あなた自身の判断を振り返ってください。"
       : path.instruction);
     if (storageStatus) storageStatus.textContent = "この端末にだけ保存します。外部への送信はありません。";
+    if (recoveryRaw !== null) {
+      // Do not let the playable initial scene overwrite an unreadable save.
+      for (const button of choices.querySelectorAll?.("button") || []) button.disabled = true;
+      notice.textContent = "破損したセーブを保護しています。下の「記録の管理」から元データを書き出すか、正常な保存記録を読み込んでください。新しく始める場合は確認が必要です。";
+      if (storageStatus) storageStatus.textContent = "元セーブ保護中：書き出しまたは正常なセーブの読み込みを行ってください。";
+    }
     document.body.classList.toggle("finished", finished || isFirstEnd());
     document.body.classList.toggle("started", step > 0);
   }
 
   function resetGame() {
+    if (recoveryRaw !== null) {
+      if (!window.confirm("破損した元セーブを完全に上書きして、新しい物語を開始しますか？ 先に「記録の管理」から元データを書き出すことを推奨します。")) return;
+      const next = guard.restart(state);
+      // Overwrite only after a clear confirmation, and keep recovery blocked
+      // if storage rejects the write.
+      try { localStorage.setItem(guard.KEY, guard.serialize(next)); }
+      catch (_) {
+        saveStatus = "保存領域に書き込めなかったため、元セーブは保持しています。";
+        draw();
+        return;
+      }
+      recoveryRaw = null;
+      state = next; lastFinding = null;
+      saveStatus = "新しい調査を開始しました。";
+      draw(); revealStory();
+      return;
+    }
     const inProgress = state.night1.history.length > 0;
     if (inProgress && !window.confirm("この端末の現在の調査記録を消して、初めからやり直しますか？\n必要なら先に記録を書き出してください。")) return;
     const next = guard.restart(state);
@@ -328,12 +359,12 @@
 
   function exportSave() {
     try {
-      const text = guard.serialize(state);
+      const text = recoveryRaw !== null ? recoveryRaw : guard.serialize(state);
       const blob = new Blob([text], {type: "application/json;charset=utf-8"});
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
       anchor.href = url;
-      anchor.download = "handover-room-save-v14.json";
+      anchor.download = recoveryRaw !== null ? "handover-room-unreadable-original-v14.txt" : "handover-room-save-v14.json";
       document.body.append(anchor);
       anchor.click();
       anchor.remove();
@@ -358,6 +389,7 @@
       } catch (_err) {
         throw new Error("端末への保存に失敗したため、復元しませんでした");
       }
+      recoveryRaw = null;
       state = imported;
       saveStatus = "保存ファイルから調査を復元しました。";
       lastFinding = null;

@@ -68,6 +68,29 @@ const output=path.resolve("unified-ui-evidence");fs.mkdirSync(output,{recursive:
   assert.equal(await p.evaluate(k=>localStorage.getItem(k),saveKey),afterChoice,
     "story choice must survive a fresh page load");
   assert.equal(Number(await p.locator("#progress-track").getAttribute("aria-valuenow")),progressAfter);
+
+  // Damaged-save regression: never silently replace a player's raw save.
+  const recovery=await browser.newContext({viewport:{width:1280,height:720}});
+  const bad=await recovery.newPage();
+  bad.on("pageerror",e=>errors.push(e.message));
+  const broken='{invalid-original-save';
+  await bad.goto(url.pathToFileURL(path.resolve("index.html")).href,{waitUntil:"load"});
+  await bad.evaluate(({key,raw})=>localStorage.setItem(key,raw),{key:saveKey,raw:broken});
+  await bad.reload({waitUntil:"load"});
+  assert.equal(await bad.evaluate(k=>localStorage.getItem(k),saveKey),broken);
+  assert.equal(await bad.locator("#choices > button.option").first().isDisabled(),true,
+    "corrupted save must block new story decisions");
+  assert.match(await bad.locator("#notice").innerText(),/セーブを保護しています/);
+  await bad.locator("#reset").click(); // dialog is dismissed by default
+  assert.equal(await bad.evaluate(k=>localStorage.getItem(k),saveKey),broken,
+    "canceling destructive reset must preserve the unreadable original");
+  bad.once("dialog",dialog=>dialog.accept()); // explicit recovery confirmation
+  await bad.locator("#reset").click();
+  const replacement=await bad.evaluate(k=>localStorage.getItem(k),saveKey);
+  assert.ok(replacement && replacement!==broken && JSON.parse(replacement).data,
+    "confirmed new game must write a validated new save");
+  assert.equal(await bad.locator("#choices > button.option").first().isEnabled(),true);
+  await recovery.close();
   const mobile=await browser.newContext({viewport:{width:1024,height:768}}),q=await mobile.newPage();
   listen(q);await q.goto(url.pathToFileURL(path.resolve("index.html")).href,{waitUntil:"load"});
   const metrics=await q.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth}));

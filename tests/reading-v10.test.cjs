@@ -106,5 +106,8 @@ test("active browser script and compact CSS add no new navigation or screen",()=
   assert.ok(js.includes("reading.compose"));
   assert.ok(style.includes(".started .narrative"));
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
-  assert.equal((html.match(/<nav\b/g)||[]).length,0);
+  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
 });

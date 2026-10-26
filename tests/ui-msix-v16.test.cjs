@@ -80,7 +80,7 @@ test("screen has one primary story, visible next action, no additional tabs",()=
  for(const id of ["evidence-jump","return-story","flow-caption","progress-track"])
   assert.match(html,new RegExp('id="'+id+'"'));
  assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
- assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.equal((html.match(/<nav\b/g)||[]).length,1,"exactly one buyer navigation");
  assert.match(html,/id="handoverNav"/);
  assert.match(html,/data-handover-view="story"/);
  assert.match(html,/data-handover-view="clues"/);

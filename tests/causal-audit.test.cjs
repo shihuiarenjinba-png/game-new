@@ -204,7 +204,10 @@ test("no new navigation panes, remote API or invented charges",()=>{
   for(const x of ["verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v16.js"])
     assert.ok(html.includes('src="./'+x+'"'));
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
-  assert.equal((html.match(/<nav\b/g)||[]).length,0);
+  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
   assert.match(game,/grand\.nextSeed/);
   assert.doesNotMatch(game,/\bfetch\s*\(/);
   assert.doesNotMatch(html,/stripe|paypal|checkout/i);

@@ -187,7 +187,10 @@ test("the only UI is existing story and evidence panel, no new tabs",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
   const game=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
-  assert.equal((html.match(/<nav\b/g)||[]).length,0);
+  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
   assert.ok(html.includes('src="./game-v16.js"'));
   assert.ok(!html.includes('src="./game-v4.js"'));
   assert.match(game,/別の事件を調査する/);

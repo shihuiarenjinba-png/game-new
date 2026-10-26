@@ -130,7 +130,7 @@ test("no extra UI panel, navigational tabs or game checkout",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
   const code=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
-  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+  assert.equal((html.match(/<nav\b/g)||[]).length,1,"exactly one buyer navigation");
  assert.match(html,/id="handoverNav"/);
  assert.match(html,/data-handover-view="story"/);
  assert.match(html,/data-handover-view="clues"/);

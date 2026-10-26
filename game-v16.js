@@ -262,7 +262,7 @@
     }
 
     if (finished) {
-      const note = element("p", "end-note", "これは試作版の終幕です。違う質問を選べば、別の沈黙が見えるかもしれません。");
+      const note = element("p", "end-note", "今夜の調査はここまで。違う質問を選べば、別の沈黙が見えるかもしれません。");
       choices.append(note);
     }
 

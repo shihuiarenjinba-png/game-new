@@ -109,7 +109,9 @@ test("older v13 campaigns remain exactly the same under new rendering and save m
   assert.deepEqual(restored,s);
   assert.equal(restored.arcMode,"deliberative");
   assert.equal(results.result(restored),"");
-  assert.equal(reader.compose(s,{body:"old prose"},{major:"test"}),null);
+  // A migrated v13 save must retain the exact historical reader result.
+  const historical=require("../reading-v13.js").compose(s,{body:"old prose"},{major:"test"});
+  assert.equal(reader.compose(s,{body:"old prose"},{major:"test"}),historical);
   assert.deepEqual(save.parse(save.serialize(restored)),restored);
   assert.equal(former.serialize(s),f);
   assert.equal(save.restart(restored).arcMode,"deliberative");

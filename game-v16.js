@@ -187,8 +187,9 @@
             next = { ...state, night1: newNight, morning: null, deduction: null };
           }
           if (!guard.validState(next)) throw new Error("進行の整合性を確認できません");
+          if (!write(next)) { notice.textContent = saveStatus; return; }
           state = next;
-          write(state);
+          saveStatus = "";
           draw();
           revealStory();
         } catch (_err) {
@@ -205,8 +206,9 @@
         try {
           const next = { ...state, deduction: deduction.rewind(state.deduction, state) };
           if (!guard.validState(next)) throw new Error("戻る操作で保存形式が不正になりました");
+          if (!write(next)) { notice.textContent = saveStatus; return; }
           state = next;
-          write(state);
+          saveStatus = "";
           draw();
           revealStory();
         } catch (_err) {
@@ -227,9 +229,10 @@
       nextButton.addEventListener("click", () => {
         const next = { ...state, morning: morning.fresh(state.night1), deduction: null };
         if (!guard.validState(next)) { notice.textContent = "進行を開始できませんでした。"; return; }
+        if (!write(next)) { notice.textContent = saveStatus; return; }
         state = next;
         lastFinding = null;
-        write(state);
+        saveStatus = "";
         draw();
         revealStory();
       });
@@ -248,10 +251,10 @@
         if (!window.confirm("新しい事件を始めますか？ 現在の記録は上書きされます。必要なら先に書き出してください。")) return;
         const seed = state.case.mode === "procedural" ? grand.nextSeed(state.case.seed) : randomSeed();
         const next = guard.blank(seed);
+        if (!write(next)) { notice.textContent = saveStatus; return; }
         state = next;
         lastFinding = null;
         saveStatus = "";
-        write(next);
         draw();
         revealStory();
       });
@@ -349,10 +352,10 @@
     const inProgress = state.night1.history.length > 0;
     if (inProgress && !window.confirm("この端末の現在の調査記録を消して、初めからやり直しますか？\n必要なら先に記録を書き出してください。")) return;
     const next = guard.restart(state);
+    if (!write(next)) { notice.textContent = saveStatus; return; }
     state = next;
     lastFinding = null;
     saveStatus = "";
-    write(next);
     draw();
     revealStory();
   }

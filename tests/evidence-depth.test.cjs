@@ -68,7 +68,10 @@ test("no new navigation and evidence card displays only its title until opened",
   const code=fs.readFileSync(path.join(__dirname,"..","game-v2.js"),"utf8");
   const styles=fs.readFileSync(path.join(__dirname,"..","style.css"),"utf8");
   assert.match(html,/src="\.\/case-notes\.js"/);
-  assert.equal((html.match(/<nav\b/g)||[]).length,0);
+  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
   assert.match(code,/element\("details", "clue"\)/);
   assert.match(code,/element\("summary", "clue-title"/);

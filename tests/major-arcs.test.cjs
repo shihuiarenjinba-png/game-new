@@ -130,7 +130,10 @@ test("no extra UI panel, navigational tabs or game checkout",()=>{
   const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
   const code=fs.readFileSync(path.join(__dirname,"..","game-v16.js"),"utf8");
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
-  assert.equal((html.match(/<nav\b/g)||[]).length,0);
+  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
   for(const file of ["major-arcs.js","case-notes-v6.js","verified-arcs.js","case-notes-v7.js","six-arcs.js","case-notes-v8.js","immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v6.js","save-v7.js","save-v8.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","game-v16.js"])
     assert.ok(html.includes('src="./'+file+'"'));
   assert.match(code,/arcs?\.|grand\.sceneText/);

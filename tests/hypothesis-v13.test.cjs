@@ -176,7 +176,10 @@ test("new interface keeps one story panel, authoring and guarded commercial pack
  for(const f of files)assert.ok(html.includes('src="./'+f+'"'));
  assert.ok(html.indexOf("deliberative-arcs-v13.js")<html.indexOf("deduction.js"));
  assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
- assert.equal((html.match(/<nav\b/g)||[]).length,0);
+ assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
  assert.match(game,/midpoint\.chooseInitial/);
  assert.match(game,/midpoint\.chooseRevision/);
  assert.doesNotMatch(game,/\bfetch\s*\(/);

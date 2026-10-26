@@ -53,7 +53,8 @@ const output=path.resolve("unified-ui-evidence");fs.mkdirSync(output,{recursive:
   observed.checkedAllTabs=verifiedTabs===count;
 
   // Actual mystery choice + save continuity, separate from simple tab switching.
-  await p.locator('[data-handover-view="story"]').click();
+  // The grid also exposes data-handover-view as current state; click only the tab button.
+  await p.locator('#handoverNav button[data-handover-view="story"]').click();
   const saveKey="handover-room-prototype-v14";
   const progressBefore=Number(await p.locator("#progress-track").getAttribute("aria-valuenow"));
   const choices=p.locator("#choices > button.option");

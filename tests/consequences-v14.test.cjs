@@ -177,7 +177,10 @@ test("single story panel, shorter theory prompts, no new UI tabs or checkout",()
  assert.ok(review.body.length<400);
  assert.ok(review.choices.every(x=>!x.hint));
  assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
- assert.equal((html.match(/<nav\b/g)||[]).length,0);
+ assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
  assert.ok(html.includes('src="./game-v16.js"'));
  assert.ok(!html.includes('src="./game-v13.js"'));
  assert.ok(game.includes('if (option.hint && option.hint.trim())'));

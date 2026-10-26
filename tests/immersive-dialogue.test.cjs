@@ -168,7 +168,10 @@ test("simple UI and guarded Store manifest remain intact",()=>{
   for(const f of ["immersive-arcs.js","scene-beats.js","case-notes-v9.js","save-v9.js","reading-v10.js","deliberation-v13.js","deliberative-arcs-v13.js","notes-v13.js","reading-v13.js","save-v13.js","midpoint-v14.js","arcs-v14.js","notes-v14.js","consequences-v14.js","save-v14.js","reading-v14.js","game-v16.js"])
     assert.ok(html.includes('src="./'+f+'"'),f);
   assert.equal((html.match(/class="story-panel"/g)||[]).length,1);
-  assert.equal((html.match(/<nav\b/g)||[]).length,0);
+  assert.equal((html.match(/<nav\\b/g)||[]).length,1,"exactly one buyer navigation");
+ assert.match(html,/id="handoverNav"/);
+ assert.match(html,/data-handover-view="story"/);
+ assert.match(html,/data-handover-view="clues"/);
   assert.match(game,/beats\.safeCaseNotes/);
   assert.match(game,/beats\.line/);
   assert.doesNotMatch(game,/\bfetch\s*\(/);

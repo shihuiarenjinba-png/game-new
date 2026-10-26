@@ -1,4 +1,4 @@
-#requires -Version 5.1
+﻿#requires -Version 5.1
 param(
   [string]$OutputFolder = "dist-msix",
   [string]$IdentityName = $env:STORE_IDENTITY_NAME,
@@ -47,11 +47,11 @@ try {
 
   $identity = $manifest.SelectSingleNode("/*[local-name()='Package']/*[local-name()='Identity']")
   if (-not $identity) { throw "Package.Identity要素がありません" }
-  if ([string]$identity.Name -cne $IdentityName) { throw "Identity.Name mismatch" }
-  if ([string]$identity.Publisher -cne $Publisher) { throw "Identity.Publisher mismatch" }
-  if ([string]$identity.Version -cne $PackageVersion) { throw "Identity.Version mismatch" }
-  if ([string]$identity.Version -notmatch '^\d+\.\d+\.\d+\.0$') { throw "Identity.Version revision must be 0" }
-  if ([string]$identity.ProcessorArchitecture -cne "x64") { throw "ProcessorArchitecture is not x64" }
+  if ([string]$identity.GetAttribute("Name") -cne $IdentityName) { throw "Identity.Name mismatch" }
+  if ([string]$identity.GetAttribute("Publisher") -cne $Publisher) { throw "Identity.Publisher mismatch" }
+  if ([string]$identity.GetAttribute("Version") -cne $PackageVersion) { throw "Identity.Version mismatch" }
+  if ([string]$identity.GetAttribute("Version") -notmatch '^\d+\.\d+\.\d+\.0$') { throw "Identity.Version revision must be 0" }
+  if ([string]$identity.GetAttribute("ProcessorArchitecture") -cne "x64") { throw "ProcessorArchitecture is not x64" }
 
   $pdn = $manifest.SelectSingleNode("//*[local-name()='PublisherDisplayName']")
   if (-not $pdn -or [string]$pdn.InnerText -cne [string]$record.publisherDisplayName) {
